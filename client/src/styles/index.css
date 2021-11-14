@@ -1,0 +1,60 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+section {
+  padding-top: 3rem;
+  padding-bottom: 2.7rem;
+}
+
+.blog-content img {
+  width: 100%;
+}
+
+/* ============================ Base ============================= */
+@import url("./base.css");
+
+/* ============================ Auth Page ============================= */
+@import url("./auth.css");
+
+/* ============================ Loading ============================= */
+@import url("./loading.css");
+
+/* ============================ Alert ============================= */
+@import url("./alert.css");
+
+/* ============================ Profile Page ============================= */
+@import url("./profile.css");
+
+/* ============================ Feature-post ============================= */
+@import url("./featured-post.css");
+
+/* ============================ Post Menu ============================= */
+@import url("./post-menu.css");
+
+/* ============================ Home Page ============================= */
+@import url("./blog-card.css");
+
+/* ============================ Social media ============================= */
+@import url("./social-media.css");
+
+/* ============================ Post Card ============================= */
+@import url("./post-card.css");
+
+/* ============================ Dark Mode ============================= */
+@import url("./dark-mode.css");
+
+/* ============================ Favourite Color ============================= */
+@import url("./fav-color.css");

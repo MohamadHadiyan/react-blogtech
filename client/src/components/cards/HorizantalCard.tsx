@@ -1,0 +1,134 @@
+import React, { useEffect, useState } from "react";
+import { useAppSelector } from "../../hooks/storeHooks";
+import { useMedia } from "../../hooks/useMedia";
+import { toSummarize } from "../../utils/getBlogInfo";
+import getDate from "../../utils/GetDate";
+import { IBlog, IUser } from "../../utils/TypeScript";
+import ActiveLink from "../global/ActiveLink";
+import Avatar from "../global/Avatar";
+import { Card, CardBody } from "../global/Card";
+import { DefaultDropDownMenu, MenuItemType } from "../global/Dropdown";
+import FlexBox, { Col } from "../global/FlexBox";
+
+interface ICard {
+  blog: IBlog;
+  className?: string;
+}
+
+const HorizantalCard = ({ blog, className = "" }: ICard) => {
+  const { auth } = useAppSelector((state) => state);
+  const [lg, setLg] = useState(false);
+  const media = useMedia("(min-width: 768px)");
+
+  useEffect(() => {
+    setLg(media);
+  }, [media]);
+
+  const imgUrl =
+    typeof blog.thumbnail === "string"
+      ? blog.thumbnail
+      : URL.createObjectURL(blog.thumbnail);
+
+  const description =
+    blog.description.length > 100
+      ? blog.description.slice(0, 100) + "..."
+      : blog.description;
+  const isUser =
+    auth.user && auth.user._id === (blog.user as IUser)._id ? true : false;
+
+  const menuItems: MenuItemType[] = [
+    isUser
+      ? {
+          header: "Setting",
+          divider: true,
+          items: [
+            {
+              icon: <i className="fas fa-edit me-2" />,
+              to: `/update_blog/${blog._id}`,
+              className: "text-success",
+              title: "Edit",
+            },
+          ],
+        }
+      : { items: [] },
+    {
+      header: "Share",
+      divider: !isUser,
+      items: [
+        { icon: <i className="fab fa-facebook me-2" />, title: "FaceBook" },
+        { icon: <i className="fab fa-twitter me-2" />, title: "Twitter" },
+        { icon: <i className="fab fa-linkedin me-2" />, title: "Linked In" },
+        { icon: <i className="fas fa-copy me-2" />, title: "Copy Link" },
+      ],
+    },
+    isUser ? { items: [] } : { items: [{ title: "Report" }] },
+  ];
+
+  return (
+    <Card
+      className={`mt-3 ${className}`}
+      style={lg ? { maxHeight: "250px" } : {}}
+    >
+      <FlexBox row className="g-0">
+        <Col md="4">
+          <ActiveLink to={`blog/${blog._id}`} title={blog.title}>
+            <img
+              src={imgUrl}
+              alt=""
+              className={`rounded-${lg ? "start" : "top"} w-100 h-100`}
+              style={lg ? { maxHeight: "250px" } : { maxHeight: "400px" }}
+            />
+          </ActiveLink>
+        </Col>
+
+        <Col md="8">
+          <FlexBox>
+            <CardBody className="position-relative">
+              <h3 className="mb-3">
+                <ActiveLink
+                  stretched
+                  to={`blog/${blog._id}`}
+                  className="text-link"
+                  title={blog.title.replace(/\s/g, " ")}
+                >
+                  {blog.title.length > 70
+                    ? blog.title.replace(/\s/g, " ").slice(0, 67) + "..."
+                    : blog.title.replace(/\s/g, " ")}
+                </ActiveLink>
+              </h3>
+
+              <small className="text-muted">
+                {blog.views ? toSummarize(blog.views) : "NO"} Views .{" "}
+              </small>
+              <small>{getDate(blog.createdAt, { fullText: true })}</small>
+
+              {typeof blog.user !== "string" && (
+                <div className="position-relative mt-1 mb-2">
+                  <ActiveLink
+                    stretched
+                    to={`profile/${blog.user._id}`}
+                    className="text-purple d-flex align-items-end"
+                    title={blog.user.name}
+                  >
+                    <Avatar src={blog.user.avatar} />
+                    <span className="line-height-1 ms-1">{blog.user.name}</span>
+                  </ActiveLink>
+                </div>
+              )}
+
+              <p className="text-secondary m-1">
+                {description.replace(/\s/g, " ")}
+              </p>
+            </CardBody>
+
+            <div className="p-3">
+              <DefaultDropDownMenu menuItems={menuItems} />
+            </div>
+          </FlexBox>
+        </Col>
+      </FlexBox>
+    </Card>
+  );
+};
+
+export default HorizantalCard;

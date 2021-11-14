@@ -1,0 +1,54 @@
+.menu-content {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 4px;
+}
+
+.menu-content span {
+  font-family: sans-serif;
+}
+
+.menu-content li {
+  position: relative;
+  line-height: 1;
+  margin: 0 5px;
+}
+
+.menu-content li a:hover span {
+  transform: translate(-50%, -10px);
+  opacity: 1;
+}
+
+.menu-content .fa-eye:hover {
+  color: #3ec2ff !important;
+}
+
+.menu-content .fa-heart:hover {
+  color: #f32e2e !important;
+}
+
+.menu-content .fa-comment:hover {
+  color: #f3be2e !important;
+}
+
+.menu-content span {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: "Open Sans" sans-serif;
+  transform: translate(-50%, 0);
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.menu-content .show {
+  transform: translate(-50%, -10px);
+  opacity: 1;
+  white-space: nowrap;
+}

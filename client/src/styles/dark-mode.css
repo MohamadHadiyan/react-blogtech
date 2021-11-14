@@ -1,0 +1,82 @@
+.dark body,
+.dark .bg-purple-light {
+  background: #242427 !important;
+  color: #cfcdd4 !important;
+}
+
+.dark .card:not(.featured-post),
+.dark .navbar,
+.dark .list-group-item,
+.dark .page-item:not(.active) span {
+  background: #323035 !important;
+  color: #cfcdd4 !important;
+}
+
+.dark .bg-light,
+.dark .bg-white {
+  background: #323035 !important;
+}
+
+.dark .card-header,
+.dark .card-footer,
+.dark .dropdown-menu {
+  background: #3c3a3f !important;
+  color: #cfcdd4 !important;
+}
+
+.dark .navbar-header,
+.dark .nav-item a,
+.dark .text-link,
+.dark .btn {
+  color: #ebeaee !important;
+}
+
+.dark .dropdown-item {
+  color: #cfcdd4;
+}
+
+.dark .text-secondary {
+  color: #8e8b94 !important;
+}
+
+.dark .text-link:hover,
+.dark .page-link:hover {
+  color: #e6e4eb !important;
+}
+
+.dark .text-purple:hover {
+  color: #815fd1d8;
+}
+
+.dark .active-purple-link {
+  background-color: #9c72fd46 !important;
+}
+
+.dark .border,
+.dark .form-control,
+.dark .page-link {
+  border: 1px solid #504e52 !important;
+}
+
+.dark .border-bottom {
+  border-bottom: 1px solid #504e52 !important;
+}
+
+.dark .border-bottom-2:not(.active) {
+  border-bottom: 2px solid #504e52 !important;
+}
+
+.dark .border-top {
+  border-top: 1px solid #504e52 !important;
+}
+
+.dark .form-control {
+  background-color: #3f3b446e !important;
+  color: #e5e2ee !important;
+}
+
+.dark .pseudo-input-box,
+.dark .pseudo-input-box input {
+  background-color: transparent !important;
+  color: #e5e2ee !important;
+}

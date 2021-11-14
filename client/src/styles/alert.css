@@ -1,0 +1,13 @@
+.errorMsg,
+.successMsg {
+  text-align: center;
+  background: #a22;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 0;
+}
+
+.successMsg {
+  background: #2a5;
+}

@@ -1,0 +1,83 @@
+.auth_page {
+  margin-top: 3.5rem;
+  margin-bottom: 2.8rem;
+}
+
+.auth_page .auth_box {
+  width: 100%;
+  max-width: 400px;
+  border: 0;
+  border-radius: 24px;
+  background: #fff;
+  padding: 2.7rem 1.7rem;
+  box-shadow: 0 0 30px #00000030;
+}
+
+.auth_page .pass {
+  position: relative;
+}
+
+.auth_page p,
+.auth_page label {
+  font-weight: 500;
+  color: #666666;
+  font-size: 15px;
+}
+
+.auth_page a {
+  font-weight: 500;
+  line-height: 2.2;
+}
+
+.auth_page #my-signin2 > div {
+  border: 0;
+}
+
+.auth_page .pass small {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  padding: 0 4px;
+  color: #b3b7c0;
+  border-radius: 3px;
+  transform: translateY(-50%);
+  user-select: none;
+  cursor: pointer;
+}
+
+.auth_page .pass small:hover {
+  box-shadow: 0 0 0 2px #6091ec;
+  color: #6091ec;
+}
+
+.bg-primary-soft {
+  background: rgba(17, 86, 235, 0.1);
+}
+
+.bg-google {
+  background-color: #3c7ff1;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.bg-google:hover {
+  background-color: #3672d9;
+  color: #fff;
+}
+
+.bg-facebook {
+  background-color: #5d82d1;
+  color: #fff;
+  transition: all 0.3s;
+}
+
+.bg-facebook:hover {
+  background-color: #5475bc;
+  color: #fff;
+}
+
+.auth_page input::placeholder {
+  opacity: 0.5;
+  font-size: 12px;
+  font-weight: 500;
+}
