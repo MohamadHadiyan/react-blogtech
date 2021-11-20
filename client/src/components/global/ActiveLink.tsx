@@ -11,6 +11,7 @@ interface ILink {
   to?: string | LinkLocation;
   stretched?: boolean;
   color?: LinkColorType;
+  button?: boolean;
 }
 
 const ActiveLink = ({
@@ -19,6 +20,7 @@ const ActiveLink = ({
   className = "",
   stretched,
   color,
+  button,
   ...prop
 }: AnchorHTMLAttributes<HTMLAnchorElement> & ILink) => {
   return (
@@ -26,7 +28,9 @@ const ActiveLink = ({
       to={to}
       className={`text-decoration-none fw-semi-bold ${
         stretched ? "stretched-link" : ""
-      }${color ? " text-" + color : ""} ${className}`}
+      }${color ? " text-" + color : ""} ${
+        button ? "btn btn-purple" : ""
+      } ${className}`}
       {...prop}
     >
       {children}

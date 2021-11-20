@@ -151,7 +151,7 @@ export const updateUserImages =
       });
 
       const res = await patchAPI("user_info", info, access_token);
-      
+
       dispatch({ type: ALERT, payload: { success: res.data.msg } });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
@@ -215,7 +215,7 @@ export const getProfileInfo =
 
       dispatch({ type: types.GET_PROFILE_INFO, payload: res.data });
 
-      dispatch({ type: ALERT, payload: {} });
+      dispatch({ type: ALERT, payload: { loading: false } });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }
@@ -539,8 +539,6 @@ export const UpdateNotifySettings =
     }
 
     try {
-      dispatch({ type: ALERT, payload: { loading: true } });
-
       const res = await patchAPI(
         `user_notify_settings/${user_settings_id}`,
         settings,
@@ -553,8 +551,6 @@ export const UpdateNotifySettings =
           payload: settings,
         });
       }
-
-      dispatch({ type: ALERT, payload: { success: res.data.msg } });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }

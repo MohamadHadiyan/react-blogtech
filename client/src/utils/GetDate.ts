@@ -1,19 +1,28 @@
 import moment from "moment";
+import { DateFilter } from "../components/global/Filters";
+import { IBlog } from "./TypeScript";
 
-const getDate = (createdAt: string, optional?: { fullText: boolean }) => {
+const getDiff = (createdAt: string) => {
   const timeFirst = moment(new Date(createdAt).getTime());
   const timeEnd = moment(Date.now());
   const diff = timeEnd.diff(timeFirst);
-  const diffTime = moment.duration(diff);
+  const duration = moment.duration(diff);
 
-  const years = diffTime.years();
-  const months = diffTime.months();
-  const days = diffTime.days();
-  const hours = diffTime.hours();
-  const mins = diffTime.minutes();
+  const years = duration.years();
+  const months = duration.months();
+  const weeks = duration.weeks();
+  const days = duration.days();
+  const hours = duration.hours();
+  const mins = duration.minutes();
 
+  return { years, months, weeks, days, hours, mins };
+};
+
+const getDate = (createdAt: string, optional?: { fullText: boolean }) => {
   let fullText = false;
   if (optional && optional.fullText) fullText = optional.fullText;
+
+  const { years, months, days, hours, mins } = getDiff(createdAt);
 
   const date =
     years === 0 && months === 0 && days === 0 && hours === 0 && mins === 0
@@ -37,6 +46,38 @@ const getDate = (createdAt: string, optional?: { fullText: boolean }) => {
       : `${years}${fullText ? " years ago" : "yrs"}`;
 
   return date;
+};
+
+export const filterBlogs = (filter: DateFilter, blogs: IBlog[]) => {
+  switch (filter) {
+    case "Last hour":
+      return blogs.filter((blog) => {
+        const { years, months, days, hours } = getDiff(blog.createdAt);
+        return years === 0 && months === 0 && days === 0 && hours === 0;
+      });
+    case "Today":
+      return blogs.filter((blog) => {
+        const { years, months, days } = getDiff(blog.createdAt);
+        return years === 0 && months === 0 && days === 0;
+      });
+    case "This week":
+      return blogs.filter((blog) => {
+        const { years, months, weeks } = getDiff(blog.createdAt);
+        return years === 0 && months === 0 && weeks === 0;
+      });
+    case "Last month":
+      return blogs.filter((blog) => {
+        const { years, months } = getDiff(blog.createdAt);
+        return years === 0 && months === 0;
+      });
+    case "Last year":
+      return blogs.filter((blog) => {
+        const { years } = getDiff(blog.createdAt);
+        return years === 0;
+      });
+    default:
+      return blogs;
+  }
 };
 
 export default getDate;

@@ -60,7 +60,7 @@ export const register =
  * -------------------------------------------------------------
  */
 export const refreshToken =
-  (nextAtion?: (token?: string) => void) =>
+  (nextAtion?: (token?: string) => void, withLoading?: boolean) =>
   async (dispatch: Dispatch<IAuthType | IAlertType>) => {
     const logged = localStorage.getItem("is_logged");
 
@@ -70,7 +70,9 @@ export const refreshToken =
     }
 
     try {
-      dispatch({ type: ALERT, payload: { loading: true } });
+      if (withLoading) {
+        dispatch({ type: ALERT, payload: { loading: true } });
+      }
 
       const res = await getAPI("refresh_token");
 
@@ -78,7 +80,7 @@ export const refreshToken =
 
       if (nextAtion) nextAtion(res.data.access_token);
 
-      dispatch({ type: ALERT, payload: {} });
+      dispatch({ type: ALERT, payload: { loading: false } });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
       localStorage.removeItem("is_logged");

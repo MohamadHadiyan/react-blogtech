@@ -1,6 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import getDate from "../../utils/GetDate";
+
 type TOption = {
   amount: string;
   to?: string;
@@ -26,39 +26,27 @@ const PostMenu = ({ className = "", info, show }: IMenuProps) => {
     <ul className={`menu-content position-reletive ${className}`}>
       {info.createdAt && (
         <li>
-          <Link
-            to="#"
-            className="far fa-calendar-alt text-decoration-none text-reset"
-          >
+          <i className="far fa-calendar-alt">
             <span className={show ? "show" : ""}>
               {getDate(info.createdAt)}
             </span>
-          </Link>
+          </i>
         </li>
       )}
       <li>
-        <Link
-          to={`${views.to || "#"}`}
-          className="far fa-eye text-decoration-none text-reset"
-        >
+        <i className="far fa-eye">
           <span className={show ? "show" : ""}>{views.amount}</span>
-        </Link>
+        </i>
       </li>
       <li>
-        <Link
-          to={`${likes.to || "#"}`}
-          className="far fa-heart text-decoration-none text-reset"
-        >
+        <i className="far fa-heart">
           <span className={show ? "show" : ""}>{likes.amount}</span>
-        </Link>
+        </i>
       </li>
       <li>
-        <Link
-          to={`${comments.to || "#comments"}`}
-          className="far fa-comment text-decoration-none text-reset"
-        >
+        <i className="far fa-comment">
           <span className={show ? "show" : ""}>{comments.amount}</span>
-        </Link>
+        </i>
       </li>
     </ul>
   );

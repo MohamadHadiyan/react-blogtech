@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useMedia } from "../../hooks/useMedia";
 import { IBlog } from "../../utils/TypeScript";
 import { CardFooter, HeaderCard } from "../global/CardComponets";
-import NotFound from "../global/NotFound";
 
 interface IProps {
   post: IBlog;
@@ -13,34 +12,32 @@ const PostCard = ({ post }: IProps) => {
   const [titleLength, setTitleLength] = useState(40);
   const [descLength, setDescLength] = useState(110);
 
-  const match992 = useMedia("(min-width:992px)");
-  const match1200 = useMedia("(max-width:1200px)");
   const match320 = useMedia("(min-width:320px)");
   const match768 = useMedia("(max-width:768px)");
+  const matchMin768 = useMedia("(min-width:768px)");
 
   useEffect(() => {
     if (match320 && match768) {
-      setTitleLength(65);
-    } else if (match992 && match1200) {
-      setTitleLength(30);
+      setTitleLength(80);
     } else {
-      setTitleLength(40);
+      setTitleLength(50);
     }
 
     if (match320 && match768) {
-      setDescLength(110);
-    } else if (match1200) {
-      setDescLength(70);
+      setDescLength(120);
     } else {
-      setDescLength(90);
+      setDescLength(100);
     }
-  }, [match1200, match320, match768, match992]);
+  }, [match320, match768]);
 
-  if (!post) return <NotFound />;
+  if (!post) return <div />;
 
   return (
     <div>
-      <div className="card post-card border-0 shadow">
+      <div
+        className="card post-card border-0 shadow-sm"
+        style={!matchMin768 ? { minHeight: "auto" } : {}}
+      >
         {typeof post.category !== "string" && (
           <div className="position-absolute">
             <HeaderCard category={post.category.name} />
@@ -57,8 +54,11 @@ const PostCard = ({ post }: IProps) => {
         </Link>
 
         <div className="card-body">
-          <div className="position-relative card-body evenly p-0">
-            <h3 className="title">
+          <div
+            className="position-relative card-body p-0"
+            style={{ maxHeight: "180px", overflow: "hidden" }}
+          >
+            <h3 className="title mb-4 mb-md-1">
               <Link
                 to={`/blog/${post._id}`}
                 className="text-inherit btn-link stretched-link text-reset text-decoration-none"
@@ -68,7 +68,7 @@ const PostCard = ({ post }: IProps) => {
                   : post.title}
               </Link>
             </h3>
-            <p>
+            <p className="d-none d-sm-block">
               {post.description.length > descLength
                 ? post.description.slice(0, descLength) + "..."
                 : post.description}

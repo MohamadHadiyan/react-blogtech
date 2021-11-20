@@ -23,6 +23,13 @@ const ChangePassword = () => {
   const handleSubmitPassword = (e: FormSubmit) => {
     e.preventDefault();
 
+    if (oldPassword.length < 6) {
+      return dispatch({
+        type: ALERT,
+        payload: { errors: "Password must be atleast 6 characters long." },
+      });
+    }
+
     if (newPassword && oldPassword && auth.access_token) {
       dispatch(
         resetPassword(newPassword, cf_password, auth.access_token, oldPassword)

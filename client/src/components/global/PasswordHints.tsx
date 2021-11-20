@@ -7,7 +7,7 @@ interface IProps {
 const PasswordHints = ({ className = "" }: IProps) => {
   return (
     <div className={className}>
-      <h5 className="text-dark">Password reuirements:</h5>
+      <h5 >Password reuirements:</h5>
       <p className="small mb-2 text-secondary">
         Ensure that these requirements are met:
       </p>

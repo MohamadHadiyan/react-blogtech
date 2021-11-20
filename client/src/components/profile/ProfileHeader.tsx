@@ -61,9 +61,7 @@ const ProfileHeader = ({
           } border-0`}
         >
           <div
-            className={`card-header position-relative min-vh-30 ${
-              isDesktop ? "mb-6" : "mb-5"
-            } `}
+            className="card-header position-relative min-vh-30 mb-6"
             style={isDesktop ? {} : { minHeight: "20vh" }}
           >
             <CoverImg
@@ -187,8 +185,15 @@ const UserInfoSection = ({ info, ...res }: IUserInfo) => {
       justify="between"
       items="end"
       className={`w-100 position-absolute bottom-0 px-2 px-lg-4 mb-md-2`}
+      wrap
     >
-      <FlexBox items="end">
+      <FlexBox
+        items="center"
+        wrap
+        justify="center"
+        column
+        className="flex-md-row align-items-md-end"
+      >
         <Avatar
           imgUrl={info.avatarImage}
           mutable={res.mutable}

@@ -71,16 +71,12 @@ export const getBlogsByCategory =
   (id: string, search: string) =>
   async (dispatch: Dispatch<IAlertType | types.ICategoryType>) => {
     try {
-      dispatch({ type: ALERT, payload: { loading: true } });
-
       const res = await getAPI(`blogs/category/${id}${search}`);
 
       dispatch({
         type: types.GET_BLOGS_CATEGORY,
         payload: { ...res.data, id, search },
       });
-
-      dispatch({ type: ALERT, payload: { loading: false } });
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     }

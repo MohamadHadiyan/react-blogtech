@@ -145,8 +145,8 @@ const BlogDetails = ({ blog }: IProps) => {
     <FlexBox
       wrap
       items="end"
-      justify="between"
-      className={`mt-4 fw-semi-bold pb-2`}
+      justify="center"
+      className="mt-4 fw-semi-bold pb-2 g-0 justify-content-md-between"
     >
       <div className="mb-2">
         <span className="me-3">
@@ -159,7 +159,9 @@ const BlogDetails = ({ blog }: IProps) => {
       <FlexBox
         row
         className={
-          isFixed ? "position-fixed start-0 p-2 pt-4 end-0 bg-purple-light" : ""
+          isFixed
+            ? "position-fixed start-0 pb-1 pt-lg-4 end-0 bg-purple-light"
+            : "ps-md-2 g-0"
         }
         justify="center"
         style={isFixed ? { top: "45px", zIndex: 10 } : {}}
@@ -167,37 +169,40 @@ const BlogDetails = ({ blog }: IProps) => {
         <Col lg={isFixed ? "8" : "auto"}>
           <FlexBox wrap justify="center" items="center">
             <Button
+              size="sm"
               border
               onClick={handleLike}
-              className="me-2 mt-2"
+              className="me-1 me-md-2 mt-2 p-1 p-md-2"
               title="I liked this"
             >
               {blog.likes && toSummarize(blog.likes.length)}{" "}
-              {liked ? " Liked" : "Like"}
-              <ThumbsUpIcon
-                fill={liked}
-                color={liked ? "purple" : ""}
-                size="lg"
-                className="ms-2 mt-2"
-              />
+              {liked ? "Liked " : "Like "}
+              <ThumbsUpIcon fill={liked} color={liked ? "purple" : ""} />
             </Button>
 
             <Button
+              size="sm"
               border
               onClick={() => history.push("#comments")}
-              className="me-2 mt-2"
+              className="me-1 me-md-2 mt-2 p-1 p-md-2"
               title="Leave a comment"
             >
-              Comment
-              <CommentIcon className="ms-2" size="lg" />
+              {blog.comments.length} Comment <CommentIcon />
             </Button>
 
             <DefaultDropDownMenu
               toggleClass="p-0"
-              menuItems={ShareLink(`http://www.localhost.com/blog/${blog._id}`)}
-              transform="translate(-100px,-20px)"
+              menuItems={ShareLink(
+                `https://blogtech-app.herokuapp.com/blog/${blog._id}`
+              )}
+              transform="translate(30px,50px)"
               icon={
-                <Button border className="me-2 mt-2" title="Share Blog">
+                <Button
+                  size="sm"
+                  border
+                  className="me-1 me-md-2 mt-2 p-1 p-md-2"
+                  title="Share Blog"
+                >
                   <ShareIcon /> Share
                 </Button>
               }
@@ -207,9 +212,10 @@ const BlogDetails = ({ blog }: IProps) => {
               onClick={handleSave}
               show={isSaved}
               loading={loading}
+              size="sm"
               border
               width={{ before: 100, after: 110 }}
-              className="mt-2"
+              className="mt-2 p-1 p-md-2"
               title="Save Blog, Add this blog to your favourites"
               beforeChild={
                 <>

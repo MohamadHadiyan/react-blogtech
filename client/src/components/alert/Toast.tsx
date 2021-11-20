@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../hooks/storeHooks";
 import { ALERT } from "../../redux/types/alertType";
 
 interface IProps {
@@ -9,15 +10,29 @@ interface IProps {
 }
 
 const Toast = ({ title, body, bgColor }: IProps) => {
+  const { alert } = useAppSelector((state) => state);
   const dispatch = useDispatch();
-  let time =Array.isArray(body)?body.length * 10000: 10000;
+
+  const duration = Array.isArray(body) ? body.length * 10000 : 10000;
 
   useEffect(() => {
-    setTimeout(() => dispatch({ type: ALERT, payload: {} }), time);
-  }, [dispatch, time]);
+    let timer = setTimeout(() => {
+      if (alert.errors || alert.success) {
+        dispatch({
+          type: ALERT,
+          payload: { loading: false, errors: "", success: "" },
+        });
+      }
+    }, duration);
+
+    return () => clearTimeout(timer);
+  }, [alert.errors, alert.success, dispatch, duration]);
 
   const handleClose = () => {
-    dispatch({ type: ALERT, payload: {} });
+    dispatch({
+      type: ALERT,
+      payload: { loading: false, errors: "", success: "" },
+    });
   };
 
   return (

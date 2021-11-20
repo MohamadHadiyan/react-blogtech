@@ -12,14 +12,19 @@ const generatePage = (name: string) => {
     return (
       <div>
         <Header />
-        <div className="container mt-5 pt-3 min-h-100vh">
+        <div className="container mt-4 mt-lg-5 pt-4 min-h-100vh">
           {React.createElement(component())}
         </div>
         <Footer />
       </div>
     );
   } catch (err) {
-    return <NotFound />;
+    return (
+      <div>
+        <Header />
+        <NotFound />
+      </div>
+    );
   }
 };
 

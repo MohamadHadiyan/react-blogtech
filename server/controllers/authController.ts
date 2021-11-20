@@ -16,7 +16,6 @@ import {
   IReqAuth,
   IUser,
   IuserParams,
-  IUserSetting,
 } from "../config/interface";
 import { OAuth2Client } from "google-auth-library";
 import fetch from "node-fetch";
@@ -54,7 +53,14 @@ const authCtrl = {
       const url = `${CLIENT_URL}/active/${active_token}`;
 
       if (validateEmail(account)) {
-        sendMail(account, url, name, "Verify your email address.");
+        sendMail(
+          account,
+          url,
+          name,
+          "Verify your email address.",
+          "Confirm Your Email",
+          "To activate your Twilio Account, please verify your email address.<br>Your account will not be created until your email address is confirmed."
+        );
 
         return res.status(201).json({ msg: successMsg("email") });
       } else if (validatePhone(account)) {
@@ -83,25 +89,8 @@ const authCtrl = {
       }
 
       const user = new User(newUser);
-      const notifySetting = new NotificationSettings();
-      const privacySetting = new PrivacySettings();
-      const socialProfiles = new SocialProfiles();
-      const userInterface = new UserInterface();
-      const settings = {
-        user: user._id,
-        notificationSetting: notifySetting._id,
-        privacySetting: privacySetting._id,
-        socialProfiles: socialProfiles._id,
-        userInterface: userInterface._id,
-      };
+      user.settings = await createUserSettings(user._id);
 
-      const userSettings = new UserSettings(settings);
-      user.settings = userSettings._id;
-      await notifySetting.save();
-      await privacySetting.save();
-      await socialProfiles.save();
-      await userInterface.save();
-      await userSettings.save();
       await user.save();
 
       return res.status(201).json({ msg: "Account has been activated." });
@@ -192,7 +181,7 @@ const authCtrl = {
       }
 
       const user = await User.findOne({ account: email });
-      const password = email + "user google secret password";
+      const password = email + `${process.env.USER_GOOGLE_PASSWORD}`;
       const hashedPassword = await bcrypt.hash(password, 10);
 
       if (user) {
@@ -227,7 +216,7 @@ const authCtrl = {
       const { name, email, picture } = data;
 
       const user = await User.findOne({ account: email });
-      const password = email + "user facebook secret password";
+      const password = email + `${process.env.USER_FACEBOOK_PASSWORD}`;
       const hashedPassword = await bcrypt.hash(password, 10);
 
       if (user) {
@@ -253,7 +242,7 @@ const authCtrl = {
 
       const data = await smsOTP(phone, "sms");
 
-      res.json({ data });
+      return res.json({ data });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
@@ -308,7 +297,14 @@ const authCtrl = {
       const url = `${CLIENT_URL}/reset_password/${access_token}`;
 
       if (validateEmail(account)) {
-        sendMail(account, url, user.name, "Forgot Password?");
+        sendMail(
+          account,
+          url,
+          user.name,
+          "Forgot Password?",
+          "Reset Password",
+          "To reset your account password, please click on the link below."
+        );
 
         return res.json({ msg: successMsg("email") });
       } else if (validatePhone(account)) {
@@ -332,8 +328,8 @@ const loginUser = async (user: IUser, password: string, res: Response) => {
   const access_token = generateAccessToken({ id: user._id });
   const rf_token = generateRefreshToken({ id: user._id }, res);
 
-  await User.findOneAndUpdate({ _id: user._id }, { rf_token });
-
+  const settings = await createUserSettings(user._id);
+  await User.findOneAndUpdate({ _id: user._id }, { rf_token, settings });
   return res.status(200).json({
     msg: "Login success",
     access_token,
@@ -348,6 +344,8 @@ const registerUser = async (user: IuserParams, res: Response) => {
   const rf_token = generateRefreshToken({ id: newUser._id }, res);
 
   newUser.rf_token = rf_token;
+  newUser.settings = await createUserSettings(newUser._id);
+
   await newUser.save();
 
   return res.status(200).json({
@@ -355,6 +353,27 @@ const registerUser = async (user: IuserParams, res: Response) => {
     access_token,
     user: { ...newUser._doc, password: "" },
   });
+};
+
+const createUserSettings = async (user_id: string) => {
+  const notifySetting = new NotificationSettings();
+  const privacySetting = new PrivacySettings();
+  const socialProfiles = new SocialProfiles();
+  const userInterface = new UserInterface();
+  const userSettings = new UserSettings({
+    user: user_id,
+    notificationSetting: notifySetting._id,
+    privacySetting: privacySetting._id,
+    socialProfiles: socialProfiles._id,
+    userInterface: userInterface._id,
+  });
+  await notifySetting.save();
+  await privacySetting.save();
+  await socialProfiles.save();
+  await userInterface.save();
+  await userSettings.save();
+
+  return userSettings._id;
 };
 
 export default authCtrl;

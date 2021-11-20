@@ -24,7 +24,7 @@ interface IProps {
 const FlexBox = ({
   children,
   className = "",
-  id = "",
+  id,
   style,
   justify,
   items,
@@ -63,6 +63,7 @@ type TCol =
   | "auto";
 
 interface ICol {
+  xxl?: TCol;
   xl?: TCol;
   lg?: TCol;
   md?: TCol;
@@ -71,6 +72,7 @@ interface ICol {
   children: React.ReactNode;
 }
 export const Col = ({
+  xxl,
   xl,
   lg,
   md,
@@ -82,9 +84,9 @@ export const Col = ({
 }: ICol & HTMLAttributes<HTMLDivElement>) => {
   return (
     <div
-      className={`${xl ? "col-xl-" + xl : ""}${lg ? " col-lg-" + lg : ""}${
-        md ? " col-md-" + md : ""
-      }${sm ? " col-sm-" + sm : ""}${
+      className={`${xxl ? "col-xxl-" + xxl : ""}${xl ? " col-xl-" + xl : ""}${
+        lg ? " col-lg-" + lg : ""
+      }${md ? " col-md-" + md : ""}${sm ? " col-sm-" + sm : ""}${
         col ? " col-" + col : ""
       } ${className}`.trim()}
       {...props}

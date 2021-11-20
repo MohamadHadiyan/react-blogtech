@@ -15,7 +15,7 @@ const BlogSingle = () => {
     (state) => state
   );
   const [blog, setBlog] = useState<IBlog>();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,10 +28,8 @@ const BlogSingle = () => {
     if (currentBlog._id && currentBlog._id === id) {
       setBlog(currentBlog);
     } else if (auth.access_token) {
-      setLoading(true);
       dispatch(getBlog(id, auth.access_token));
     } else {
-      setLoading(true);
       dispatch(getBlog(id));
     }
 
@@ -50,7 +48,7 @@ const BlogSingle = () => {
   }, [id, socket]);
 
   return (
-    <div className="py-4 py-lg-5">
+    <div className="py-lg-4">
       {blog ? (
         <DisplayBlog blog={blog} />
       ) : (

@@ -72,7 +72,7 @@ const Follows = ({ tab }: { tab: "followers" | "followings" }) => {
         style={loading ? { height: "130px" } : {}}
       >
         <FlexBox row className="g-3">
-          {loading && <Loading position="absolute" />}
+          {loading && <Loading position="absolute" size={30} />}
           {searchFUser ? (
             <UserCard user={searchFUser} tab={tab} />
           ) : fUsers.length ? (

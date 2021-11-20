@@ -158,7 +158,7 @@ body {
 }
 
 .min-h-100vh {
-  min-height: calc(100vh - 170px); /* 100vh - (header + footer) */
+  min-height: calc(100vh - 150px); /* 100vh - (header + footer) */
 }
 
 .page-link {
@@ -221,6 +221,10 @@ body {
   border-color: #b086fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(77, 59, 110, 0.25);
+}
+
+.dropdown-item:focus {
+  background-color: #7940ff28;
 }
 
 .btn-purple,

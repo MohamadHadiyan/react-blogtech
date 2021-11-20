@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector } from "../../hooks/storeHooks";
 import { IBlog } from "../../utils/TypeScript";
+import Button from "../global/Button";
 import FlexBox, { Col } from "../global/FlexBox";
 import CommentSection from "./CommentSection";
 import HeaderSection from "./HeaderSection";
@@ -15,6 +16,7 @@ const DisplayBlog = ({ className = "", blog }: IDisplayBlog) => {
   const { homeBlogs } = useAppSelector((state) => state);
   const allBlogs = homeBlogs.allBlogs.blogs;
   const index = allBlogs.findIndex((item) => item._id === blog._id);
+  const [show, setShow] = useState(false);
 
   const next = index + 1 < allBlogs.length ? allBlogs[index + 1] : allBlogs[0];
   const prev =
@@ -25,6 +27,18 @@ const DisplayBlog = ({ className = "", blog }: IDisplayBlog) => {
       ? blog.thumbnail
       : URL.createObjectURL(blog.thumbnail);
 
+  useEffect(() => {
+    const handleScroll = (e: Event) => {
+      let sY = window.scrollY;
+      if (sY > 800) return;
+
+      setShow(sY > 600 ? true : false);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <article className={className}>
       <FlexBox row justify="center">
@@ -32,7 +46,9 @@ const DisplayBlog = ({ className = "", blog }: IDisplayBlog) => {
           <HeaderSection blog={blog} />
 
           <BlogSection center>
-            <p className="text-start text-secondary">{blog.description}</p>
+            <p className="text-start text-secondary">
+              {blog.description.replace(/\s/g, " ")}
+            </p>
             <img
               src={imgUrl}
               alt={blog.title}
@@ -41,7 +57,7 @@ const DisplayBlog = ({ className = "", blog }: IDisplayBlog) => {
           </BlogSection>
           <BlogSection className="blog-content">
             <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-            <hr className="mt-5 mb-4" />
+            <hr className="mt-2 mt-lg-5 mb-0 mb-lg-4" />
           </BlogSection>
 
           {typeof blog.user !== "string" && prev && next ? (
@@ -60,6 +76,20 @@ const DisplayBlog = ({ className = "", blog }: IDisplayBlog) => {
           )}
         </Col>
       </FlexBox>
+      {show && (
+        <div
+          className="position-fixed bottom-0 right-0 m-2 m-lg-3 shadow-lg z-999"
+          style={{ width: "30px", height: "30px" }}
+        >
+          <Button
+            color="purple"
+            size="sm"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <i className="fas fa-chevron-up" />
+          </Button>
+        </div>
+      )}
     </article>
   );
 };

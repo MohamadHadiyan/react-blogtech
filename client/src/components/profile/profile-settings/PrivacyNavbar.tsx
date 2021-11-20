@@ -20,7 +20,7 @@ const PrivacyNavbar = ({ callbackValue }: IProps) => {
         tabIndex={0}
         onClick={() => handleTabs("all")}
         sm="3"
-        className={`border-bottom-2 py-3 text-center fw-semi-bold cursor-pointer ${
+        className={`border-bottom-2 py-2 py-lg-3 text-center fw-semi-bold cursor-pointer ${
           tab === "all" ? "active" : "text-secondary"
         }`}
       >
@@ -30,7 +30,7 @@ const PrivacyNavbar = ({ callbackValue }: IProps) => {
         tabIndex={0}
         onClick={() => handleTabs("public")}
         sm="3"
-        className={`border-bottom-2 py-3 text-center fw-semi-bold cursor-pointer ${
+        className={`border-bottom-2 py-2 py-lg-3 text-center fw-semi-bold cursor-pointer ${
           tab === "public" ? "active" : "text-secondary"
         }`}
       >
@@ -40,7 +40,7 @@ const PrivacyNavbar = ({ callbackValue }: IProps) => {
         tabIndex={0}
         onClick={() => handleTabs("private")}
         sm="3"
-        className={`border-bottom-2 py-3 text-center fw-semi-bold cursor-pointer ${
+        className={`border-bottom-2 py-2 py-lg-3 text-center fw-semi-bold cursor-pointer ${
           tab === "private" ? "active" : "text-secondary"
         }`}
       >
@@ -50,7 +50,7 @@ const PrivacyNavbar = ({ callbackValue }: IProps) => {
         tabIndex={0}
         onClick={() => handleTabs("draft")}
         sm="3"
-        className={`border-bottom-2 py-3 text-center fw-semi-bold cursor-pointer ${
+        className={`border-bottom-2 py-2 py-lg-3 text-center fw-semi-bold cursor-pointer ${
           tab === "draft" ? "active" : "text-secondary"
         }`}
       >

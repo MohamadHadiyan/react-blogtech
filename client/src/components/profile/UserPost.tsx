@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/storeHooks";
+import { useMedia } from "../../hooks/useMedia";
 import { deleteBlog } from "../../redux/actions/blogAction";
 import { ALERT } from "../../redux/types/alertType";
-import { IBlog, IParams, IUser } from "../../utils/TypeScript";
+import { IBlog, IParams, IUserCard } from "../../utils/TypeScript";
 import ActiveLink from "../global/ActiveLink";
 import DialogBox from "../global/DialogBox";
 import { DefaultDropDownMenu, MenuItemType } from "../global/Dropdown";
 import FlexBox from "../global/FlexBox";
 import { LockIcon, PencilIcon } from "../global/Icons";
-import Rating from "../global/Rating";
 import ShareLink from "../global/ShareLink";
 
 interface IPost {
@@ -22,6 +22,7 @@ const UserPost = ({ post, isUser }: IPost) => {
   const dispatch = useDispatch();
   const { slug } = useParams<IParams>();
   const [show, setShow] = useState(false);
+  const media = useMedia("(min-width: 768px)");
 
   const handleConfirm = (value: boolean) => {
     if (!auth.access_token || !auth.user) return;
@@ -32,7 +33,7 @@ const UserPost = ({ post, isUser }: IPost) => {
   };
 
   const handleDelete = () => {
-    if (slug !== (post.user as IUser)._id) {
+    if (slug !== (post.user as IUserCard)._id) {
       return dispatch({
         type: ALERT,
         payload: { errors: "Invalid Authentication" },
@@ -63,7 +64,7 @@ const UserPost = ({ post, isUser }: IPost) => {
           ],
         }
       : { items: [] },
-    ...ShareLink(`http://www.localhost.com/blog/${post._id}`, true),
+    ...ShareLink(`https://blogtech-app.herokuapp.com/blog/${post._id}`, true),
     isUser ? { items: [] } : { items: [{ title: "Report" }] },
   ];
 
@@ -74,10 +75,24 @@ const UserPost = ({ post, isUser }: IPost) => {
 
   return (
     <>
-      <FlexBox justify="between" items="center" className="position-relative">
-        <ActiveLink to={`/blog/${post._id}`} color="link">
+      <FlexBox
+        justify="between"
+        items="center"
+        column={!media}
+        className="position-relative"
+      >
+        <ActiveLink to={`/blog/${post._id}`} color="link" className="w-100">
           <div className="d-lg-flex align-items-center">
-            <PostImage url={postImg} />
+            <img
+              src={postImg}
+              alt=""
+              className="rounded"
+              style={{
+                width: `${media ? "7rem" : "100%"}`,
+                maxHeight: "350px",
+                objectFit: "cover",
+              }}
+            />
             <PostDetails post={post} />
           </div>
         </ActiveLink>
@@ -89,7 +104,9 @@ const UserPost = ({ post, isUser }: IPost) => {
         {post.privacy && post.privacy === "draft" && (
           <PencilIcon fill className="position-absolute px-2 top-0 end-0" />
         )}
-        <DefaultDropDownMenu menuItems={menuItems} />
+        <div className="position-absolute right-0 bottom-0">
+          <DefaultDropDownMenu menuItems={menuItems} />
+        </div>
 
         <DialogBox
           show={show}
@@ -100,14 +117,6 @@ const UserPost = ({ post, isUser }: IPost) => {
         />
       </FlexBox>
     </>
-  );
-};
-
-const PostImage = ({ url }: { url: string }) => {
-  return (
-    <div>
-      <img src={url} alt="" className="rounded" style={{ width: "7rem" }} />
-    </div>
   );
 };
 
@@ -131,9 +140,6 @@ const PostDetails = ({ post }: { post: IBlog }) => {
         <ListInlineItem>
           <i className="far fa-heart me-1 text-purple" />
           {post.likes && (post.likes.length || "")} likes
-        </ListInlineItem>
-        <ListInlineItem>
-          <Rating />
         </ListInlineItem>
       </ListInline>
     </div>

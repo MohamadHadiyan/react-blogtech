@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useAppSelector } from "../../hooks/storeHooks";
+import { useAppSelector } from "../../../hooks/storeHooks";
 import {
   deleteComment,
   replyComment,
   updateComment,
   updateCommentLikes,
-} from "../../redux/actions/commentAction";
-import getDate from "../../utils/GetDate";
-import { IComment } from "../../utils/TypeScript";
-import ActiveLink from "../global/ActiveLink";
-import Button from "../global/Button";
+} from "../../../redux/actions/commentAction";
+import getDate from "../../../utils/GetDate";
+import { IComment } from "../../../utils/TypeScript";
+import ActiveLink from "../../global/ActiveLink";
+import Button from "../../global/Button";
 import {
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-} from "../global/Dropdown";
-import FlexBox from "../global/FlexBox";
-import { InlineList, InlineListItem } from "../global/Lists";
+} from "../../global/Dropdown";
+import FlexBox from "../../global/FlexBox";
+import { InlineList, InlineListItem } from "../../global/Lists";
 import CreateComment from "./CreateComment";
 
 interface IProps {
@@ -144,6 +144,7 @@ const CommentInner = ({
     <div className="w-100">
       <CommentHeader
         userName={comment.user.name}
+        user_id={comment.user._id}
         createdAt={comment.createdAt}
       />
 
@@ -227,12 +228,17 @@ const CommentInner = ({
 
 interface IHeader {
   userName: string;
+  user_id: string;
   createdAt: string;
 }
-const CommentHeader = ({ userName, createdAt }: IHeader) => {
+const CommentHeader = ({ userName, user_id, createdAt }: IHeader) => {
   return (
     <h6 className="d-flex fw-bold flex-wrap center mt-2">
-      <ActiveLink color="link" className="me-1 me-md-3">
+      <ActiveLink
+        to={`/profile/${user_id}`}
+        color="link"
+        className="me-1 me-md-3"
+      >
         {userName}
       </ActiveLink>
       <small className="text-secondary mt-1">
@@ -263,7 +269,7 @@ const CommentFooter = ({
 
   return (
     <FlexBox justify="between">
-      <InlineList>
+      <InlineList className="mb-0 mb-lg-2">
         <InlineListItem>
           <Button className="ps-1 pe-0" title="Like" onClick={handleLikes}>
             <i className="far fa-thumbs-up"></i>
@@ -287,7 +293,7 @@ const CommentFooter = ({
         </InlineListItem>
       </InlineList>
       <Dropdown isOpen={isOpen} toggle={() => setIsOpen(!isOpen)}>
-        <DropdownToggle id="comment_options">
+        <DropdownToggle id="comment_options" className="py-0 px-2">
           <i className="fas fa-ellipsis-v text-secondary" />
         </DropdownToggle>
         <DropdownMenu

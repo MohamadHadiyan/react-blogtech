@@ -115,7 +115,6 @@
 }
 
 .cover-image-file-input {
-  opacity: 0;
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -191,6 +190,15 @@
 }
 
 @media (min-width: 768px) {
+  .cover-image .cover-image-file-input {
+    opacity: 0;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .avatar-5xl .overlay-icon {
+    bottom: -100%;
+  }
+
   .avatar-5xl {
     height: 10.5rem;
     width: 10.5rem;
@@ -214,17 +222,18 @@
 
 .overlay-icon {
   position: absolute;
-  height: 50%;
+  height: 60%;
   width: 100%;
-  bottom: -100%;
+  bottom: -25px;
   -webkit-transition: all 0.2s ease-in-out;
   -o-transition: all 0.2s ease-in-out;
   transition: all 0.3s ease-in-out;
+  padding-bottom: 10px;
   cursor: pointer;
 }
 
 .avatar-5xl:hover .overlay-icon {
-  bottom: 0;
+  bottom: 0px;
 }
 
 .bg-holder.overlay::before {

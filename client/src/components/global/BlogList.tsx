@@ -16,6 +16,7 @@ const BlogList = ({ blogs, count, searchPage }: IBlogList) => {
   const history = useHistory();
   const search = history.location.search;
   const [limit, setLimit] = useState(6);
+  const [filteredBlogs, setFilteredBlogs] = useState<IBlog[]>([]);
 
   const handlePagination = (num: number) => {
     const searchParam =
@@ -40,11 +41,18 @@ const BlogList = ({ blogs, count, searchPage }: IBlogList) => {
     }
   };
 
+  const currentBlogs = filteredBlogs.length ? filteredBlogs : blogs;
+
   return (
-    <div className="py-5">
-      {count > 6 && <Filters />}
-      <FlexBox row className="g-4">
-        {blogs.map((blog) => (
+    <div className="pt-lg-4">
+      {count > 1 && (
+        <Filters
+          callbackFilter={(blogs) => setFilteredBlogs(blogs)}
+          blogs={blogs}
+        />
+      )}
+      <FlexBox row className="g-2 g-md-4 mb-4">
+        {currentBlogs.map((blog) => (
           <Col lg="4" md="6" col="12" key={blog._id}>
             <PostCard post={blog} />
           </Col>
@@ -53,7 +61,7 @@ const BlogList = ({ blogs, count, searchPage }: IBlogList) => {
       {count > limit && (
         <>
           <hr />
-          <div className="d-lg-flex justify-content-between align-itemscenter pt-3 pb-2">
+          <div className="d-lg-flex justify-content-between align-itemscenter pt-md-3">
             <LimitPage handler={handleLimit} />
             <Pagination
               page={searchPage}
@@ -80,7 +88,7 @@ const LimitPage = ({ handler }: ILimit) => {
       <label className="me-2 pe-1">Show</label>
       <select
         defaultValue="6"
-        className="form-select me-2"
+        className="form-select me-2 flex-grow-1 flex-sm-grow-0 "
         style={{ width: "5rem" }}
         onChange={(e) => handler(+e.target.value)}
       >

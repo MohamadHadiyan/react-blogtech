@@ -103,7 +103,8 @@ const Register = () => {
                   .
                 </small>
               }
-              callbackValue={() =>
+              defaultChecked={userRegister.accept_terms}
+              callbackChecked={() =>
                 setUserRegister({
                   ...userRegister,
                   accept_terms: !userRegister.accept_terms,

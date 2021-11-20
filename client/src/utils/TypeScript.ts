@@ -7,6 +7,7 @@ export type RootState = ReturnType<typeof rootReducer>;
 export type UserPrivacyType = "public" | "private";
 export type UserType = "register" | "google" | "facebook";
 export type UserRole = "user" | "admin";
+export type ThemeType = "dark" | "light";
 
 export type BlogPrivacyType = "public" | "private" | "draft";
 export type FormSubmit = FormEvent<HTMLFormElement>;
@@ -14,6 +15,7 @@ export type FormSubmit = FormEvent<HTMLFormElement>;
 export type InputChange = ChangeEvent<
   HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
 >;
+
 export type TColor =
   | "primary"
   | "secondary"
@@ -27,6 +29,7 @@ export type TColor =
   | "purple"
   | "success-soft"
   | "danger-soft"
+  | "light-soft"
   | "";
 
 export interface IParams {
@@ -49,6 +52,7 @@ export interface IUserCard {
   surname?: string;
   _id: string;
   avatar: string;
+  followers: string[];
 }
 
 export interface INotification {
@@ -97,7 +101,7 @@ export interface INotifySettings {
 }
 
 export interface IUserInterface {
-  themeMode: "dark" | "light";
+  themeMode: ThemeType;
   favouriteColor: TColor;
   rightNavigation: boolean;
 }
@@ -187,7 +191,7 @@ export interface IBlogCard {
 
 export interface IBlog {
   _id?: string;
-  user: string | IUser;
+  user: string | IUserCard;
   title: string;
   thumbnail: string | File;
   category: string | ICategory;
@@ -198,6 +202,7 @@ export interface IBlog {
   likes: string[];
   privacy?: BlogPrivacyType;
   comments: IComment[];
+  readingTime?: number;
   createdAt: string;
 }
 

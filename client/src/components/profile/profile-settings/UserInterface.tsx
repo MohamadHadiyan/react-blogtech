@@ -178,7 +178,7 @@ const UserInterface = () => {
           />
         </div>
         <div className="pt-3 pt-xl-4">
-          <h6 className="m-0">Hide right navigation</h6>
+          <h6 className="m-0">Show right navigation</h6>
           <InputBox
             type="checkbox"
             row

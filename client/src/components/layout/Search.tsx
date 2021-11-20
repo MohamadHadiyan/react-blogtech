@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { getAPI } from "../../utils/FetchData";
 import { FormSubmit } from "../../utils/TypeScript";
-import ActiveLink from "./ActiveLink";
-import Button from "./Button";
+import ActiveLink from "../global/ActiveLink";
+import Button from "../global/Button";
 
 interface IBlog {
   title: string;
@@ -72,9 +72,9 @@ const Search = ({ handleRoute }: IProps) => {
   };
 
   return (
-    <div className="position-relative w-100">
+    <div className="position-relative w-100 pt-1 ps-1 p-lg-0">
       <form
-        className="input-group m-auto"
+        className="input-group m-auto rounded-pill border"
         onSubmit={handleSubmit}
         style={{ maxWidth: "800px" }}
       >
@@ -83,19 +83,26 @@ const Search = ({ handleRoute }: IProps) => {
           tabIndex={-1}
           autoComplete="false"
           type="search"
-          className="form-control shadow-sm"
+          className="form-control border-0"
           placeholder="Search"
           value={search}
           onFocus={() => setShow(true)}
-          style={{ background: "#e3dbf13d" }}
+          style={{
+            background: "#e3dbf13d",
+            borderTopLeftRadius: "50rem",
+            borderBottomLeftRadius: "50rem",
+          }}
           onChange={(e) => setSearch(e.target.value)}
         />
 
         <Button
           tabIndex={-1}
           type="submit"
-          style={{ background: "#e3dbf13d" }}
-          className="border shadow-sm"
+          style={{
+            background: "#e3dbf13d",
+            borderTopRightRadius: "50rem",
+            borderBottomRightRadius: "50rem",
+          }}
         >
           <i className="fas fa-search" />
         </Button>

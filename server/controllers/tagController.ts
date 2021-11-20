@@ -154,7 +154,7 @@ const tagController = {
       }));
 
       const newTags = await Tag.insertMany(data);
-      res.json({ tags: newTags, msg: "Tag created successfully." });
+      return res.json({ tags: newTags, msg: "Tag created successfully." });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }

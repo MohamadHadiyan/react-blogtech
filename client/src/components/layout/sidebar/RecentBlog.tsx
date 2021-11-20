@@ -1,8 +1,8 @@
 import React from "react";
-import getDate from "../../utils/GetDate";
-import { IBlog } from "../../utils/TypeScript";
-import ActiveLink from "../global/ActiveLink";
-import FlexBox, { Col } from "../global/FlexBox";
+import getDate from "../../../utils/GetDate";
+import { IBlog } from "../../../utils/TypeScript";
+import ActiveLink from "../../global/ActiveLink";
+import FlexBox, { Col } from "../../global/FlexBox";
 
 interface IRecent {
   blogs: IBlog[];

@@ -9,7 +9,7 @@ const ShareLink = (link: string, divider?: boolean) => {
       items: [
         {
           icon: <i className="fab fa-facebook me-2" />,
-          title: "Facebooke",
+          title: "Facebook",
           to: {
             pathname: `https://www.facebook.com/sharer/sharer.php?u=${link}&feature=share&display=popup`,
           },
@@ -25,7 +25,7 @@ const ShareLink = (link: string, divider?: boolean) => {
         },
         {
           icon: <i className="fab fa-linkedin me-2" />,
-          title: "Linked In",
+          title: "LinkedIn",
           to: {
             pathname: `https://www.linkedin.com/sharing/share-offsite/?url=${link}&feature=share`,
           },

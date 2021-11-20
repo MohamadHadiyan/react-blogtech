@@ -8,7 +8,7 @@ import CreateBlogForm from "../components/cards/CreateBlogForm";
 import Preview from "../components/cards/Preview";
 import Quill from "../components/editor/ReactQuill";
 import Button from "../components/global/Button";
-import FlexBox from "../components/global/FlexBox";
+import FlexBox, { Col } from "../components/global/FlexBox";
 import NotFound from "../components/global/NotFound";
 import { useAppSelector } from "../hooks/storeHooks";
 import { createBlog, updateBlog } from "../redux/actions/blogAction";
@@ -16,7 +16,7 @@ import { createTag } from "../redux/actions/tagAction";
 import { ALERT } from "../redux/types/alertType";
 import { GET_BLOG } from "../redux/types/blogType";
 import { getAPI } from "../utils/FetchData";
-import { IBlog, ITag, IUser } from "../utils/TypeScript";
+import { IBlog, ITag, IUserCard } from "../utils/TypeScript";
 import {
   compareTagArrays,
   shallowEqaulity,
@@ -79,7 +79,7 @@ const CreateBlog = ({ id }: IProps) => {
       comments: [],
       views: 0,
       createdAt: "",
-      privacy:"public"
+      privacy: "public",
     };
 
     setLoading(true);
@@ -146,7 +146,7 @@ const CreateBlog = ({ id }: IProps) => {
     if (!auth.access_token || !auth.user) return;
 
     const user = auth.user;
-    const userBlog = blog.user as IUser;
+    const userBlog = blog.user as IUserCard;
     const token = auth.access_token;
 
     const { newIDs, oldIDs, newTagNames, addedIDs, removedIDs } =
@@ -154,8 +154,8 @@ const CreateBlog = ({ id }: IProps) => {
     const updatedBlog = { ...newBlog, tags: newIDs, _id: id };
 
     const blogsIsEqual = shallowEqaulity(
-      { ...oldBlog, user: (oldBlog.user as IUser)._id, tags: oldIDs },
-      { ...newBlog, user: (newBlog.user as IUser)._id }
+      { ...oldBlog, user: (oldBlog.user as IUserCard)._id, tags: oldIDs },
+      { ...newBlog, user: (newBlog.user as IUserCard)._id }
     );
 
     if (userBlog._id !== user._id) {
@@ -211,7 +211,11 @@ const CreateBlog = ({ id }: IProps) => {
   /* ====== When click on back button on browser ======= */
   const onExitPage = useCallback(
     (e: Event) => {
-      if (currentBlog._id && currentBlog._id === "drafted_blog") {
+      if (
+        currentBlog._id &&
+        currentBlog._id === "drafted_blog" &&
+        !shallowEqaulity(blog, { ...initialState, _id: "drafted_blog" })
+      ) {
         const msg =
           "Do you give up writing?\nChanges you made may not be saved.";
 
@@ -226,7 +230,7 @@ const CreateBlog = ({ id }: IProps) => {
           return history.push("/create_blog");
         }
       }
-
+      dispatch({ type: GET_BLOG, payload: initialState });
       return history.push("/");
     },
     [blog, currentBlog._id, dispatch, history, initialState]
@@ -249,14 +253,18 @@ const CreateBlog = ({ id }: IProps) => {
 
   return (
     <div>
-      <h1 className="my-3 mb-5 py-3" style={{ borderBottom: "1px solid #ccc" }}>
+      <h1 className="my-3 mb-lg-5 pb-3 border-bottom fs-3">
         {id ? "Update" : "Create"} Blog
       </h1>
 
-      <div className="row">
-        <div className="col-lg-8">
-          <CreateBlogForm blog={blog} setBlog={setBlog} />
-        </div>
+      <FlexBox row>
+        <Col lg="8">
+          <CreateBlogForm
+            blog={blog}
+            setBlog={setBlog}
+            initialBlog={{ ...initialState, _id: "drafted_blog" }}
+          />
+        </Col>
         <Preview
           blog={{
             ...blog,
@@ -264,9 +272,9 @@ const CreateBlog = ({ id }: IProps) => {
             _id: id ? blog._id : "",
           }}
         />
-      </div>
+      </FlexBox>
 
-      <div className="row">
+      <FlexBox row>
         <Quill setBody={setBody} body={body} />
         <div
           ref={divRef}
@@ -274,8 +282,8 @@ const CreateBlog = ({ id }: IProps) => {
           dangerouslySetInnerHTML={{ __html: body }}
         ></div>
 
-        <p className="small text-muted  mb-3 text-end">{text.length}</p>
-      </div>
+        <p className="small text-muted mb-2 text-end">{text.length}</p>
+      </FlexBox>
       <FlexBox justify="end" className="mb-3 mb-lg-5">
         <Button
           className="px-4 me-2"

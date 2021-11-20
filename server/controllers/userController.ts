@@ -17,7 +17,7 @@ const userController = {
 
       await User.findByIdAndUpdate({ _id: req.user._id }, updateUser);
 
-      res.json({ msg: "Update Success." });
+      return res.json({ msg: "Update Success." });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
@@ -32,7 +32,7 @@ const userController = {
 
       await User.findByIdAndUpdate({ _id: req.user._id }, { privacy });
 
-      res.json({ msg: "Update Success." });
+      return res.json({ msg: "Update Success." });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
@@ -57,17 +57,19 @@ const userController = {
         return res.status(400).json({ msg: "Invalid Authentication." });
       }
 
-      const isMatch = await bcrypt.compare(oldPassword, user.password);
+      if (oldPassword) {
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
 
-      if (!isMatch) {
-        return res.status(400).json({ msg: "Old password is incorrect." });
+        if (!isMatch) {
+          return res.status(400).json({ msg: "Old password is incorrect." });
+        }
       }
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
       await User.findByIdAndUpdate(req.user._id, { password: hashedPassword });
 
-      res.json({ msg: "Reset Password Success." });
+      return res.json({ msg: "Reset Password Success." });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
@@ -84,7 +86,7 @@ const userController = {
         return res.status(400).json({ msg: "This is a private account." });
       }
 
-      res.json(user);
+      return res.json(user);
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }
@@ -94,7 +96,7 @@ const userController = {
     try {
       const users = await User.find().select("+name +surname +avatar");
 
-      res.json(users);
+      return res.json(users);
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }

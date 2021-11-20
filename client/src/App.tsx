@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Alert } from "./components/alert/Alert";
@@ -16,8 +16,30 @@ import Login from "./pages/login";
 import { getArchiveDate } from "./redux/actions/archiveAction";
 import { getCategoriesName } from "./redux/actions/categoryAction";
 import { getTagsName } from "./redux/actions/tagAction";
+import AlertCookie from "./components/alert/AlertCookie";
+import Cookies from "js-cookie";
+
 function App() {
+  const [showCookie, setShowCookie] = useState(false);
   const dispatch = useDispatch();
+
+  const cookie = Cookies.get("coockie_notice_accepted");
+  const accepted = cookie === undefined ? false : JSON.parse(cookie);
+
+  const handleSetCookie = () => {
+    Cookies.set("coockie_notice_accepted", "true", { expires: 365 });
+    setShowCookie(false);
+  };
+
+  useEffect(() => {
+    if (accepted) return;
+
+    let timer = setTimeout(() => {
+      setShowCookie(true);
+    }, 20000);
+
+    return () => clearTimeout(timer);
+  }, [accepted]);
 
   useEffect(() => {
     dispatch(
@@ -27,7 +49,7 @@ function App() {
         dispatch(getArchiveDate());
         dispatch(getCategoriesName());
         dispatch(getTagsName());
-      })
+      }, true)
     );
   }, [dispatch]);
 
@@ -47,17 +69,30 @@ function App() {
     if (theme) {
       document.documentElement.classList.add(`${theme}`);
     }
-    
+
     if (color) {
       document.documentElement.classList.add(`fav-${color}`);
     }
-  },[]);
+  }, []);
+
+  useEffect(() => {
+    const time = setInterval(() => {
+      dispatch(refreshToken());
+    }, 84e4);
+
+    return () => clearInterval(time);
+  }, [dispatch]);
 
   return (
     <Router>
       <SocketClient />
       <ScrollHandler />
       <Alert />
+      <AlertCookie
+        handleSetCookie={handleSetCookie}
+        isOpen={showCookie}
+        handleClose={() => setShowCookie(false)}
+      />
       <Switch>
         <Route exact path="/" component={PageRender} />
         <Route exact path="/register" component={Register} />

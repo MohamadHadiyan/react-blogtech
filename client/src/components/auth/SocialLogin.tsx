@@ -28,7 +28,7 @@ const SocialLogin = ({ signin, className = "" }: IProps) => {
       <p className="text-secondary small">
         Sign {signin ? "in" : "up"} with your social network for quick access
       </p>
-      <div className="mt-3 center">
+      <div>
         <div className="me-2 mb-2 w-100">
           <FacebookLogin appId="199558671999132" onSuccess={responseFacebook} />
         </div>

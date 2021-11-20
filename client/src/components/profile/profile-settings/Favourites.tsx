@@ -57,7 +57,7 @@ const Favourites = () => {
         className="position-relative"
         style={loading ? { height: "176px" } : {}}
       >
-        {loading && <Loading position="absolute" />}
+        {loading && <Loading position="absolute" size={30} />}
         {blogs.length
           ? blogs.map((item, i) => (
               <CardLikedBlog
@@ -112,7 +112,7 @@ const CardLikedBlog = ({
         className="d-flex flex-column justify-content-between"
       >
         <div className="position-relative">
-          <h5>
+          <h5 className="mb-3">
             <ActiveLink
               to={`/blog/${blog._id}`}
               color="purple"
@@ -122,7 +122,7 @@ const CardLikedBlog = ({
               {blog.title.replace(/\s/g, " ")}
             </ActiveLink>
           </h5>
-          <p className=" text-secondary">
+          <p className=" text-secondary d-none d-md-block">
             {blog.description.length > 180
               ? blog.description.replace(/\s/g, " ").slice(0, 177) + "..."
               : blog.description.replace(/\s/g, " ")}

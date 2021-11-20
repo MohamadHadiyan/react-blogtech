@@ -3,15 +3,19 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/storeHooks";
 import { GET_BLOG } from "../../redux/types/blogType";
 import { IBlog, InputChange, ITag } from "../../utils/TypeScript";
+import { shallowEqaulity } from "../../utils/Valid";
 import BlogPrivacy from "../form-elements/BlogPrivacy";
 import TagInputBox from "../form-elements/TagInputBox";
+import { Card, CardBody, CardHeader } from "../global/Card";
+import FlexBox, { Col } from "../global/FlexBox";
 
 interface IProps {
   blog: IBlog;
   setBlog: (blog: IBlog) => void;
+  initialBlog: IBlog;
 }
 
-const CreateBlogForm = ({ blog, setBlog }: IProps) => {
+const CreateBlogForm = ({ blog, setBlog, initialBlog }: IProps) => {
   const { categories, currentBlog } = useAppSelector((state) => state);
   const categoriesName = categories.names.filter(
     (item) => item.name !== "draft"
@@ -23,8 +27,14 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
     setBlog(newBlog);
 
     if (
-      (currentBlog._id && currentBlog._id !== "drafted_blog") ||
-      !currentBlog._id
+      shallowEqaulity(newBlog, initialBlog) &&
+      currentBlog._id &&
+      currentBlog._id === "drafted_blog"
+    ) {
+      dispatch({ type: GET_BLOG, payload: { ...newBlog, _id: "" } });
+    } else if (
+      !currentBlog._id ||
+      (currentBlog._id && currentBlog._id !== "drafted_blog")
     ) {
       dispatch({
         type: GET_BLOG,
@@ -44,11 +54,11 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
   };
 
   return (
-    <div className="card mb-3 mb-lg-4">
-      <div className="card-header">
-        <h5 className="card-tilte">Blog information</h5>
-      </div>
-      <div className="card-body">
+    <Card className="mb-2 mb-lg-4">
+      <CardHeader>
+        <h5 className="m-0">Blog information</h5>
+      </CardHeader>
+      <CardBody>
         <div className="position-relative mb-3">
           <label htmlFor="blogTitle" className="form-label">
             Title
@@ -73,8 +83,8 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
           </small>
         </div>
 
-        <div className="row">
-          <div className="col-sm-6">
+        <FlexBox row>
+          <Col md="4">
             <div className="mb-3">
               <label htmlFor="file_up" className="form-label">
                 Image
@@ -87,9 +97,9 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
                 onChange={handleChangeFile}
               />
             </div>
-          </div>
+          </Col>
 
-          <div className="col-sm-6">
+          <Col md="4">
             <div className="mb-3">
               <label htmlFor="category" className="form-label">
                 Category
@@ -101,7 +111,9 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
                 value={blog.category as string}
                 onChange={handleChangeInput}
               >
-                <option value="">Select Category</option>
+                <option value="" disabled>
+                  Select Category
+                </option>
                 {categoriesName.map((category) => (
                   <option key={category._id} value={category._id}>
                     {category.name}
@@ -109,8 +121,33 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
                 ))}
               </select>
             </div>
-          </div>
-        </div>
+          </Col>
+          <Col md="4">
+            <div className="mb-3">
+              <label htmlFor="ReadingTime" className="form-label">
+                Reading Time
+              </label>
+              <select
+                name="readingTime"
+                id="ReadingTime"
+                className="form-control"
+                value={blog.readingTime || 5}
+                onChange={handleChangeInput}
+              >
+                {[
+                  { label: "Under 3 minuts", value: 3 },
+                  { label: "3-5 minuts", value: 5 },
+                  { label: "5-10 minuts", value: 10 },
+                  { label: "Over 10 minuts", value: 15 },
+                ].map((item) => (
+                  <option key={item.label} value={item.value}>
+                    {item.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </Col>
+        </FlexBox>
         <TagInputBox
           callbackValue={(tags) => setBlog({ ...blog, tags })}
           defaultTags={blog.tags as ITag[]}
@@ -142,8 +179,8 @@ const CreateBlogForm = ({ blog, setBlog }: IProps) => {
             {blog.description.length}/300
           </small>
         </div>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };
 

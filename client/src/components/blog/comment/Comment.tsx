@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getRepliesComment } from "../../redux/actions/commentAction";
-import { IComment } from "../../utils/TypeScript";
-import Loading from "../alert/Loading";
-import ActiveLink from "../global/ActiveLink";
-import Avatar from "../global/Avatar";
-import FlexBox from "../global/FlexBox";
+import { getRepliesComment } from "../../../redux/actions/commentAction";
+import { IComment } from "../../../utils/TypeScript";
+import Loading from "../../alert/Loading";
+import ActiveLink from "../../global/ActiveLink";
+import Avatar from "../../global/Avatar";
+import FlexBox from "../../global/FlexBox";
 import CommentInner from "./CommentInner";
 
 interface IProps {
@@ -41,11 +41,11 @@ const Comment = ({ comment, className = "", blog_title }: IProps) => {
 
   return (
     <div
-      className={`mt-4 border-bottom ${className}`}
+      className={`mt-2 mt-lg-4 ${className}`}
       style={comment._id ? {} : { opacity: 0.4, pointerEvents: "none" }}
     >
       <FlexBox items="start">
-        <ActiveLink className="me-3">
+        <ActiveLink to={`/profile/${comment.user._id}`} className="me-3">
           <Avatar src={comment.user.avatar} size="md" />
         </ActiveLink>
 
@@ -85,7 +85,10 @@ const Comment = ({ comment, className = "", blog_title }: IProps) => {
                                 : { opacity: 0.4, pointerEvents: "none" }
                             }
                           >
-                            <ActiveLink className="me-3">
+                            <ActiveLink
+                              to={`/profile/${item.user._id}`}
+                              className="me-3"
+                            >
                               <Avatar src={item.user.avatar} size="md" />
                             </ActiveLink>
                             <CommentInner

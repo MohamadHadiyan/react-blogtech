@@ -8,9 +8,9 @@ const notificationController = {
       return res.status(400).json({ msg: "Invalid Authentication." });
     }
 
-    const limit = Number(req.query.limit) * 1 || 5;
+    const limit = Number(req.query.limit) * 1 || 10;
     const skip = Number(req.query.skip);
-
+console.log(limit)
     try {
       const notifications = await Notifications.aggregate([
         {

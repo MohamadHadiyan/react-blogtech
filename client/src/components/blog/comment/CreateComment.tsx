@@ -1,7 +1,7 @@
 import React, { KeyboardEvent, useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../../hooks/storeHooks";
-import { FormSubmit } from "../../utils/TypeScript";
-import Button from "../global/Button";
+import { useAppSelector } from "../../../hooks/storeHooks";
+import { FormSubmit } from "../../../utils/TypeScript";
+import Button from "../../global/Button";
 
 interface IProps {
   handleCreateComment: (data: string) => void;

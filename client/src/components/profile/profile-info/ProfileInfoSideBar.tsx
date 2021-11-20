@@ -38,12 +38,12 @@ const ProfileInfoSideBar = ({
   return (
     <Col md="4" lg="3">
       {userIntro && (
-        <Card className="mb-4 p-3 p-xl-4">
+        <Card className="mb-2 mb-lg-4 mt-2 mt-md-0 p-3 p-xl-4">
           <h5>About Me</h5>
           <p>{intro}</p>
           {userIntro.length > 200 && (
             <Button
-              className="text-purple fw-bold ps-0"
+              className="text-purple fw-bold"
               onClick={() => handleRead(intro.length)}
             >
               Read {intro.length > 200 ? "Less" : "More"}
@@ -51,7 +51,9 @@ const ProfileInfoSideBar = ({
           )}
         </Card>
       )}
-      <Card className="mb-4 p-3 p-xl-4">
+      <Card
+        className={`mb-2 mb-lg-4 p-3 p-xl-4 ${userIntro ? "" : "mt-2 mt-md-0"}`}
+      >
         {cardItems.map((item, i) => (
           <FlexBox
             justify="between"

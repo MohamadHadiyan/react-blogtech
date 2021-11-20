@@ -19,7 +19,15 @@ const categoryReducer = (
     case types.GET_BLOGS_CATEGORY:
       return {
         ...state,
-        categoryBlogs: [...state.categoryBlogs, action.payload],
+        categoryBlogs:
+          state.categoryBlogs.length > 0
+            ? [
+                ...state.categoryBlogs.filter(
+                  (item) => item.id !== action.payload.id
+                ),
+                action.payload,
+              ]
+            : [action.payload],
       };
 
     case types.UPDATE_CATEGORY:

@@ -84,7 +84,7 @@ export const NavbarToggler = ({
     aria-expanded={isActive}
     aria-label="Toggle navigation"
   >
-    <i className="fas fa-bars" />
+    {isActive ? <i className="fas fa-times" /> : <i className="fas fa-bars" />}
   </button>
 );
 
@@ -95,7 +95,7 @@ export const NavbarCollapse = ({
   isActive,
 }: IProps & IDiv & IToggle) => (
   <div
-    className={`navbar-collapse collapse mt-3 mt-lg-0 ${
+    className={`navbar-collapse collapse mt-2 mt-lg-0 ${
       isActive ? "show" : ""
     }`}
     id={targetId}

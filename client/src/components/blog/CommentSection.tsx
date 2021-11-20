@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { createComment, getComments } from "../../redux/actions/commentAction";
 import { IBlog, IComment, IUserCard } from "../../utils/TypeScript";
 import Loading from "../alert/Loading";
-import CreateComment from "../comment/CreateComment";
-import Comment from "../comment/Comment";
+import CreateComment from "./comment/CreateComment";
+import Comment from "./comment/Comment";
 import Avatar from "../global/Avatar";
 import FlexBox, { Col } from "../global/FlexBox";
 import { BlogTitle } from "./BlogComponents";
@@ -129,7 +129,7 @@ const CommentSection = ({ blog }: IProps) => {
             </BlogTitle>
           </>
         ) : (
-          <div className="mb-5">
+          <div className="mb-3 mb-lg-5">
             <BlogTitle size="sm">
               Comments (
               <span className="text-secondary">{commentsList.length}</span>)
@@ -158,7 +158,7 @@ const CommentSection = ({ blog }: IProps) => {
           </div>
         )}
         {!auth.user && (
-          <p className="mb-5">
+          <p className="mb-3 mb-lg-5">
             <ActiveLink to={`/login?blog/${blog_id}`} className="text-purple">
               <strong>Login</strong>
             </ActiveLink>{" "}
@@ -169,8 +169,9 @@ const CommentSection = ({ blog }: IProps) => {
           className="position-relative"
           style={loading ? { minHeight: "80px" } : {}}
         >
-          {commentsList.map((comment) => (
+          {commentsList.map((comment, i) => (
             <Comment
+              className={i !== commentsList.length - 1 ? "border-bottom" : ""}
               comment={comment}
               blog_title={blog.title}
               key={comment.createdAt}
@@ -181,7 +182,7 @@ const CommentSection = ({ blog }: IProps) => {
           className="position-relative"
           style={loading ? { minHeight: "150px" } : {}}
         >
-          {loading && <Loading position="absolute" />}
+          {loading && <Loading position="absolute" size={40} />}
         </div>
       </Col>
     </FlexBox>

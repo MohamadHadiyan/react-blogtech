@@ -107,7 +107,9 @@ const InputBox = ({
               type === "checkbox"
                 ? "align-items-center justify-content-between"
                 : ""
-            } ${boxClassName.includes("mb-") ? "" : "mb-3"} ${boxClassName}`
+            } ${
+              boxClassName.includes("mb-") ? "" : "mb-0 mb-lg-3 "
+            } ${boxClassName}`
           : `${
               type === "checkbox" ? "form-check" : "form-group"
             } mb-3 ${boxClassName}`
@@ -125,16 +127,13 @@ const InputBox = ({
       {type === "checkbox" &&
         (row ? <Col col="auto">{checkbox}</Col> : checkbox)}
 
-      {!firstlabel &&
-        label &&
-        !text &&
-        (row && type === "checkbox" ? (
-          <Col col="11">{inputLabel}</Col>
-        ) : row ? (
-          <Col col="3">{inputLabel}</Col>
-        ) : (
-          <Col>{inputLabel}</Col>
-        ))}
+      {!firstlabel && label && type === "checkbox" && (
+        <Col col="11">{inputLabel}</Col>
+      )}
+      {!firstlabel && label && !text && row && <Col col="3">{inputLabel}</Col>}
+      {!firstlabel && label && !text && !row && type !== "checkbox" && (
+        <Col col="11">{inputLabel}</Col>
+      )}
 
       {type !== "checkbox" && (
         <>

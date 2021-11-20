@@ -15,17 +15,17 @@ import { IBlog, ITag } from "../utils/TypeScript";
 const Results = () => {
   const { tags } = useAppSelector((state) => state);
   const [blogs, setBlogs] = useState<IBlog[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
   const [tag, setTag] = useState<ITag | null>(null);
+  const [filteredBlogs, setFilteredBlogs] = useState<IBlog[]>([]);
+
   const title = useSearchParam("search_query").value;
   const tagID = useSearchParam("tag").value;
   const dispatch = useDispatch();
 
   const getData = useCallback(
     async (query: string) => {
-      setLoading(true);
-
       try {
         const res = await getAPI(`results?${query}`);
         setBlogs(res.data.blogs);
@@ -58,9 +58,11 @@ const Results = () => {
 
   if (!title && !tagID) return <NotFound />;
 
+  const currentBlogs = filteredBlogs.length ? filteredBlogs : blogs;
+
   return (
     <div
-      className="position-relative mt-5 m-auto"
+      className="position-relative mt-0 mt-lg-5 m-auto"
       style={{ minHeight: "200px", maxWidth: "1000px" }}
     >
       {loading && <Loading position="absolute" />}
@@ -70,9 +72,14 @@ const Results = () => {
             Result ({count}){" "}
             {tag ? <span className="text-purple">{tag.name}</span> : ""}
           </h5>
-          {!!count && !loading && <Filters />}
+          {!!count && !loading && (
+            <Filters
+              callbackFilter={(blogs) => setFilteredBlogs(blogs)}
+              blogs={blogs}
+            />
+          )}
           <FlexBox column items="center">
-            {blogs.map((blog) => (
+            {currentBlogs.map((blog) => (
               <HorizantalCard blog={blog} key={blog._id} />
             ))}
           </FlexBox>

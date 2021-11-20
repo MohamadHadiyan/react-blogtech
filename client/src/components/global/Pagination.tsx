@@ -42,7 +42,7 @@ interface IProps {
 
 const PrevPage = ({ page, handler }: IProps) => {
   return (
-    <ul className="pagination">
+    <ul className="pagination mb-0">
       <li className="page-item">
         <span
           className="page-link text-secondary"
@@ -61,7 +61,7 @@ const PrevPage = ({ page, handler }: IProps) => {
 
 const NextPage = ({ page, count, handler }: IProps) => {
   return (
-    <ul className="pagination">
+    <ul className="pagination mb-0">
       <li className="page-item">
         <span
           className="page-link text-secondary"
@@ -87,7 +87,7 @@ const PageNumItem = ({ pagesArr, page, count, handler }: IpageNumItem) => {
   const isActive = (num: number) => (num === page ? "active" : "");
 
   return (
-    <ul className="pagination">
+    <ul className="pagination mb-0">
       <li className="page-item d-sm-none">
         <span className="page-link page-link-static border-0 text-secondary rounded">
           {page} / {pagesArr.length}

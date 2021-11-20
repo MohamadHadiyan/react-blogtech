@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useCallback } from "react";
 import { HTMLAttributes } from "react";
 import getUniqueID from "../../utils/GetUniqueID";
 import ActiveLink, { LinkLocation, TargetType } from "./ActiveLink";
@@ -18,30 +17,15 @@ interface IDropdown {
   toggle: () => void;
 }
 export const Dropdown = ({ children, isOpen = false, toggle }: IDropdown) => {
-  const addEvents = useCallback(() => {
-    ["click", "touchstart"].forEach((event) =>
-      document.addEventListener(event, toggle)
-    );
-  }, [toggle]);
-
-  const removeEvents = useCallback(() => {
-    ["click", "touchend"].forEach((event) =>
-      document.removeEventListener(event, toggle)
-    );
-  }, [toggle]);
-
   useEffect(() => {
-    if (isOpen) {
-      addEvents();
-    } else {
-      removeEvents();
-    }
+    if (!isOpen) return;
+
+    document.addEventListener("click", toggle);
 
     return () => {
-      removeEvents();
+      document.removeEventListener("click", toggle);
     };
-  }, [addEvents, isOpen, removeEvents]);
-
+  }, [isOpen, toggle]);
   return (
     <DropdownProvider value={{ isOpen, toggle }}>
       <div className="position-relative">{children}</div>
@@ -152,6 +136,7 @@ export type MenuItemType = {
   header?: string;
   divider?: boolean;
   className?: string;
+  itemsClass?: string;
   items: MenuItemPropsType[];
 };
 
@@ -165,6 +150,7 @@ interface IDefault {
   headerClass?: string;
   icon?: React.ReactNode;
   horizantal?: boolean;
+  toggleChild?: React.ReactNode;
 }
 
 export const DefaultDropDownMenu = ({
@@ -176,6 +162,7 @@ export const DefaultDropDownMenu = ({
   menuClass = "",
   headerClass = "",
   icon,
+  toggleChild,
   horizantal,
   ...res
 }: IDefault & HTMLAttributes<HTMLDivElement>) => {
@@ -195,12 +182,14 @@ export const DefaultDropDownMenu = ({
     return () => setState(false);
   }, []);
 
-  const CN = "cursor-pointer fw-semi-bold ";
+  const CN = (itemsClass?: string) =>
+    `cursor-pointer fw-semi-bold ${itemsClass || ""} `;
 
   return (
     <Dropdown isOpen={isOpen || state} toggle={toggle ? toggle : handleState}>
       <DropdownToggle id={id} className={toggleClass}>
         {toggleIcon}
+        {toggleChild}
       </DropdownToggle>
       <DropdownMenu
         id={id}
@@ -223,7 +212,11 @@ export const DefaultDropDownMenu = ({
                   key={getUniqueID()}
                   to={item.to}
                   target={item.target}
-                  className={item.className ? CN + item.className : CN}
+                  className={
+                    item.className
+                      ? CN(menuItem.itemsClass) + item.className
+                      : CN(menuItem.itemsClass)
+                  }
                 >
                   {item.icon}
                   {item.title}
@@ -233,7 +226,11 @@ export const DefaultDropDownMenu = ({
                 <DropdownItem
                   key={getUniqueID()}
                   onClick={item.onClick}
-                  className={item.className ? CN + item.className : CN}
+                  className={
+                    item.className
+                      ? CN(menuItem.itemsClass) + item.className
+                      : CN(menuItem.itemsClass)
+                  }
                 >
                   {item.icon}
                   {item.title}

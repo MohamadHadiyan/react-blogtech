@@ -1,16 +1,22 @@
+import { useAppSelector } from "../../hooks/storeHooks";
+import FlexBox from "./FlexBox";
+
 const NotFound = () => {
+  const { alert } = useAppSelector((state) => state);
+  
+  if (alert.loading) return <div />;
+
   return (
-    <div
-      className="position-relative"
-      style={{ minHeight: "calc(100vh - 70px )" }}
+    <FlexBox
+      justify="center"
+      items="center"
+      className="position-relative vh-100"
     >
-      <h2
-        className="position-absolute text-secondary"
-        style={{ top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}
-      >
-        404 | Not Found
-      </h2>
-    </div>
+      <div className="text-center text-secondary">
+        <h1 className="display-1">404</h1>
+        <p className="fs-5">This page could not be found.</p>
+      </div>
+    </FlexBox>
   );
 };
 

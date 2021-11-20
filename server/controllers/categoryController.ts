@@ -39,6 +39,14 @@ const categoryCtrl = {
       const allCategories = await Category.find({}).sort("-createdAt");
       const usedCategories: ICategory[] = await Blog.aggregate([
         {
+          $match: {
+            $and: [
+              { privacy: { $ne: "private" } },
+              { privacy: { $ne: "draft" } },
+            ],
+          },
+        },
+        {
           $lookup: {
             from: "categories",
             localField: "category",

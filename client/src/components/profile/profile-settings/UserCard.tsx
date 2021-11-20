@@ -13,6 +13,11 @@ const UserCard = ({ user, tab }: { user: IUserCard; tab?: string }) => {
           title: "share",
           icon: <i className="fas fa-share-alt pe-2" />,
           className: "py-2",
+          onClick: () => {
+            navigator.clipboard.writeText(
+              `https://blogtech-app.herokuapp.com/profile/${user._id}`
+            );
+          },
         },
         {
           title: "Block",

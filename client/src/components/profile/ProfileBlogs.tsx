@@ -125,13 +125,13 @@ const ProfileBlogs = () => {
   const currentData = searchBlogs.length ? searchBlogs : blogs;
 
   return (
-    <Card setRef={cardRef} id="user_blogs">
+    <Card setRef={cardRef} id="user_blogs" >
       <CardHeader className="d-flex justify-content-between">
         <CardTitle>
           My Posts <span className="text-muted">({count || 0})</span>
         </CardTitle>
         {blogs && blogs.length > 0 && isUserSelf && !loading && (
-          <Link to="/create_blog" className="btn btn-purple">
+          <Link to="/create_blog" className="btn btn-purple fw-semi-bold">
             Create Blog
           </Link>
         )}
@@ -146,7 +146,7 @@ const ProfileBlogs = () => {
         <PrivacyNavbar callbackValue={handleSelectTab} />
       )}
       <CardBody
-        className="position-relative"
+        className="position-relative p-0 p-lg-3"
         style={loading ? { minHeight: "176px" } : {}}
       >
         {blogs && blogs.length > 0 ? (
@@ -192,7 +192,7 @@ const ProfileBlogs = () => {
                 : Math.floor(count / limit) + 1
             }
             handler={handlePagination}
-            className="mt-5"
+            className="mt-3 mb-2 px-2 mt-lg-5"
           />
         )}
       </CardBody>

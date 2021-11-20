@@ -131,7 +131,6 @@ const Tags = () => {
         key={getUniqueID()}
         size="sm"
         color="danger-soft"
-        className="mt-1 mt-sm-0"
         onClick={() => handleDelete(item._id)}
       >
         <i className="fas fa-trash pe-1 pe-sm-0" />
@@ -282,7 +281,7 @@ const Table = ({ tableData }: ITable) => {
 
         <tbody>
           {tableData.body.map((item, i) => (
-            <tr key={getUniqueID()}>
+            <tr key={getUniqueID()} className="border-bottom text-link" >
               <td className="fw-semi-bold px-2">{item.title}</td>
               <td className="fw-semi-bold px-2">
                 <ActiveLink color="link" to={`/profile/${item.creator._id}`}>
@@ -291,7 +290,7 @@ const Table = ({ tableData }: ITable) => {
               </td>
               <td className="px-1 px-lg-2">{item.createdAt}</td>
               <td className="px-1 px-lg-2">{item.countUsed}</td>
-              <td className="px-1 px-lg-2 pb-0 pt-1">{item.actions}</td>
+              <td className="px-1 px-lg-2 border-0 d-flex" >{item.actions}</td>
             </tr>
           ))}
         </tbody>

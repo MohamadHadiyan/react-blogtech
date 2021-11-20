@@ -5,10 +5,15 @@ import { useAppSelector } from "../../hooks/storeHooks";
 import { IParams } from "../../utils/TypeScript";
 
 const Profile = () => {
-  const { auth } = useAppSelector((state) => state);
+  const { auth, alert } = useAppSelector((state) => state);
   const { slug } = useParams<IParams>();
   const user = auth.user;
-  return user && user._id === slug ? <UserInfo /> : <ProfileInfo id={slug} />;
+
+  return user && user._id === slug ? (
+    <UserInfo />
+  ) : (
+    !alert.loading && <ProfileInfo id={slug} />
+  );
 };
 
 export default Profile;

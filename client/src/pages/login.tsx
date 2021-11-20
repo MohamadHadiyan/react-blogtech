@@ -26,7 +26,7 @@ const Login = () => {
   }, [auth.access_token, history]);
 
   return (
-    <FlexBox justify="center" items="center" style={{ minHeight: "100vh" }}>
+    <FlexBox justify="center" items="center" className="vh-100">
       <Card className="p-0 p-sm-3" style={{ width: "450px" }}>
         <CardHeader className="border-0 pt-3">
           <ActiveLink to="/" className="text-purple">

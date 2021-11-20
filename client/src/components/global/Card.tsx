@@ -112,6 +112,10 @@ export const CardListItem = ({
   last = false,
   children,
 }: IListItem) => {
-  const padding = first ? "pb-3 pt-0" : last ? "pb-0 pt-3" : "py-3";
+  const padding = first
+    ? "pb-2 pb-lg-3 pt-2 p-2"
+    : last
+    ? "pb-0 pt-2 pt-lg-3 p-2"
+    : "p-2 py-lg-3";
   return <li className={`list-group-item ${padding}`}>{children}</li>;
 };

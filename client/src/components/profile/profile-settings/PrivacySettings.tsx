@@ -75,6 +75,7 @@ const PrivacySettings = () => {
                   <i className="fas fa-chevron-down ms-auto" />{" "}
                 </Button>
               }
+              toggleClass="p-0"
               menuItems={menuItems}
               transform="translate(0px, 40px)"
               menuClass="w-100"

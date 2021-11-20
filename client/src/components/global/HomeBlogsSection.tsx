@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../hooks/storeHooks";
 import { getHomeBlogs } from "../../redux/actions/blogAction";
+import { IBlog } from "../../utils/TypeScript";
 import Loading from "../alert/Loading";
 import PostCard from "../cards/PostCard";
+import Filters from "./Filters";
 import FlexBox, { Col } from "./FlexBox";
 
 const HomeBlogsSection = () => {
@@ -11,9 +13,11 @@ const HomeBlogsSection = () => {
   const [loading, setLoading] = useState(false);
   const [blogsLen, setBlogsLen] = useState(0);
   const [skip, setSkip] = useState(0);
-  const dispatch = useDispatch();
-  const [fullWidth, setFullWidth] = useState(false);
+  // const [fullWidth, setFullWidth] = useState(false);
+  const [showRightNav, setShowRightNav] = useState(true);
+  const [filteredBlogs, setFilteredBlogs] = useState<IBlog[]>([]);
 
+  const dispatch = useDispatch();
   const blogs = homeBlogs.allBlogs.blogs;
   const count = homeBlogs.allBlogs.count;
 
@@ -53,25 +57,33 @@ const HomeBlogsSection = () => {
 
   useEffect(() => {
     const nav = window.localStorage.getItem("right_nav");
-    if (nav) setFullWidth(true);
+    if (nav) setShowRightNav(false);
   }, []);
 
+  const currentBlogs = filteredBlogs.length ? filteredBlogs : blogs;
+
   return (
-    <Col lg={fullWidth ? "12" : "9"}>
-      <FlexBox row className="g-4">
-        {!!blogs.length &&
-          blogs.map((blog, i) => (
-            <Col md={fullWidth ? "6" : "6"} lg={fullWidth ? "4" : "6"} key={i}>
-              <PostCard post={blog} />
-            </Col>
-          ))}
-      </FlexBox>
-      {(loading && blogs.length) && (
-        <div className="position-relative" style={{ minHeight: "150px" }}>
-          <Loading position="absolute" />
-        </div>
-      )}
-    </Col>
+    <>
+      <Filters
+        callbackFilter={(blogs) => setFilteredBlogs(blogs)}
+        blogs={blogs}
+      />
+      <Col lg={showRightNav ? "9" : "12"}>
+        <FlexBox row className="g-2 g-md-4">
+          {!!blogs.length &&
+            currentBlogs.map((blog, i) => (
+              <Col md="6" lg={showRightNav ? "6" : "4"} key={i} xxl="4" >
+                <PostCard post={blog} />
+              </Col>
+            ))}
+        </FlexBox>
+        {loading && blogs.length && (
+          <div className="position-relative" style={{ minHeight: "150px" }}>
+            <Loading position="absolute" />
+          </div>
+        )}
+      </Col>
+    </>
   );
 };
 

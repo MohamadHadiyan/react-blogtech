@@ -37,7 +37,12 @@ const TagInputBox = ({ callbackValue, defaultTags }: IProps) => {
 
     try {
       const res = await getAPI(`search_tag?name=${name}`);
-      setMatchTags(res.data.tags);
+
+      const data = (res.data.tags as ITag[]).filter(
+        (tag) => !blogTgas.find((item) => item.name === tag.name)
+      );
+
+      setMatchTags(data);
     } catch (err: any) {
       dispatch({ type: ALERT, payload: { errors: err.response.data.msg } });
     } finally {
@@ -120,7 +125,7 @@ const TagInputBox = ({ callbackValue, defaultTags }: IProps) => {
   return (
     <div className="mb-3 position-relative tag-box-editor">
       <label htmlFor="tags">Tags</label>
-      <div className="d-flex justify-content-between">
+      <FlexBox justify="between">
         <p className="small text-secondary m-0 mb-1">
           Add up to 5 tags to describe what your blog is about
         </p>
@@ -130,12 +135,12 @@ const TagInputBox = ({ callbackValue, defaultTags }: IProps) => {
               items: [{ icon: <HowToTag />, className: "text-reset" }],
             },
           ]}
-          toggleClass="p-0 line-height-1"
+          toggleClass="p-0 line-height-1 ms-1"
           menuClass="bottom-0 top-auto"
           transform="translate(13px, -30px)"
           icon={<i className="fas fa-info-circle text-link" />}
         />
-      </div>
+      </FlexBox>
       <div
         className={`position-relative pseudo-input form-control `}
         onClick={handleFocus}
@@ -144,11 +149,11 @@ const TagInputBox = ({ callbackValue, defaultTags }: IProps) => {
           {!!blogTgas.length &&
             blogTgas.map((item) => (
               <span
-                className="p-1 fw-semi-bold small me-1 rounded"
+                className="p-1 fw-semi-bold small me-1 rounded text-dark"
                 key={item.name}
                 style={{ background: "#dad4e6" }}
               >
-                <span>{item.name}</span>
+                <span className="ps-1">{item.name}</span>
                 <button
                   onClick={() => handleRemoveTag(item)}
                   className="btn px-1 btn-sm line-height-1 ms-2"
@@ -183,7 +188,7 @@ const TagInputBox = ({ callbackValue, defaultTags }: IProps) => {
           style={loading ? { minHeight: "100px" } : {}}
         >
           <div className="row row-cols-1 row-cols-md-3 g-2">
-            {loading && <Loading position="absolute" />}
+            {loading && <Loading position="absolute" size={30} />}
             {matchTags.map((item) => (
               <div className="col" key={item.name}>
                 <div

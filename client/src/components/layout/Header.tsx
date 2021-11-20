@@ -6,13 +6,15 @@ import { Logo } from "../svg/Icons";
 import ActiveLink from "../global/ActiveLink";
 import Menu from "./Menu";
 import { NavbarMenu } from "../global/Navbar";
-import Search from "../global/Search";
+import Search from "./Search";
 import { useAppSelector } from "../../hooks/storeHooks";
+import { useMedia } from "../../hooks/useMedia";
 
 const Header = () => {
   const { currentBlog } = useAppSelector((state) => state);
   const history = useHistory();
   const dispatch = useDispatch();
+  const media = useMedia(`(min-width: 768px)`);
 
   const handleRoute = (path: string) => {
     if (
@@ -40,7 +42,7 @@ const Header = () => {
       className="shadow-sm position-fixed top-0 start-0 right-0 bg-purple-light"
       style={{ zIndex: 2001 }}
     >
-      <nav className="navbar navbar-expand-lg text-light p-3">
+      <nav className="navbar navbar-expand-lg align-items-start text-light p-2 p-lg-3">
         <ActiveLink
           onClick={() => handleRoute("/")}
           className="d-flex align-items-end text-purple me-lg-5"
@@ -50,8 +52,17 @@ const Header = () => {
         </ActiveLink>
 
         <NavbarMenu mediaQuery="992">
-          <Search handleRoute={handleRoute} />
-          <Menu handleRoute={handleRoute} />
+          <div
+            className="navbar-collapse collapse mt-lg-0 show"
+            style={
+              !media
+                ? { height: "100vh", overflow: "scroll", paddingBottom: "60px" }
+                : {}
+            }
+          >
+            <Search handleRoute={handleRoute} />
+            <Menu handleRoute={handleRoute} />
+          </div>
         </NavbarMenu>
       </nav>
     </header>

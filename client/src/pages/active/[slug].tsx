@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ShowErrorMsg, ShowSuccessMsg } from "../../components/alert/Alert";
+import { ShowMsg } from "../../components/alert/Alert";
+import FlexBox from "../../components/global/FlexBox";
 import { postAPI } from "../../utils/FetchData";
 import { IParams } from "../../utils/TypeScript";
 
@@ -18,10 +19,14 @@ const Active = () => {
   }, [slug]);
 
   return (
-    <div>
-      {errorMsg && ShowErrorMsg(errorMsg)}
-      {successMsg && ShowSuccessMsg(successMsg)}
-    </div>
+    <FlexBox
+      justify="center"
+      items="center"
+      className="h-100 w-100 min-h-100vh"
+    >
+      {errorMsg && <ShowMsg msg={errorMsg} color="danger" />}
+      {successMsg && <ShowMsg msg={successMsg} color="success" />}
+    </FlexBox>
   );
 };
 

@@ -97,7 +97,9 @@ export const validSaveBlog = (blog: IBlog) => {
     errors.push("Title is up to 100 characters long.");
   }
 
-  if (category === "draft") {
+  if (!category) {
+    errors.push("Category field is required");
+  } else if (category === "draft") {
     errors.push("Invalid category name!");
   }
 

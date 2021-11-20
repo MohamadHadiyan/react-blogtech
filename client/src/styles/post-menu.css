@@ -23,18 +23,6 @@
   opacity: 1;
 }
 
-.menu-content .fa-eye:hover {
-  color: #3ec2ff !important;
-}
-
-.menu-content .fa-heart:hover {
-  color: #f32e2e !important;
-}
-
-.menu-content .fa-comment:hover {
-  color: #f3be2e !important;
-}
-
 .menu-content span {
   position: absolute;
   left: 50%;

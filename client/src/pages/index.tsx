@@ -1,32 +1,15 @@
 import React, { useEffect, useState } from "react";
-import AlertCookie from "../components/alert/AlertCookie";
 import FlexBox from "../components/global/FlexBox";
 import HeroSection from "../components/hero-section/HeroSection";
-import Sidebar from "../components/sidebar/Sidebar";
-import Cookie from "js-cookie";
+import Sidebar from "../components/layout/sidebar/Sidebar";
 import HomeBlogsSection from "../components/global/HomeBlogsSection";
 import { useAppSelector } from "../hooks/storeHooks";
+import { useMedia } from "../hooks/useMedia";
 
 const Home = () => {
   const { homeBlogs } = useAppSelector((state) => state);
-  const [show, setShow] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-
-  const cookie = Cookie.get("coockie_notice_accepted");
-  const accepted = cookie === undefined ? false : JSON.parse(cookie);
-
-  const handleSetCookie = () => {
-    Cookie.set("coockie_notice_accepted", "true", { expires: 365 });
-    setShow(false);
-  };
-
-  useEffect(() => {
-    if (accepted || !homeBlogs.allBlogs.count) return;
-    let timer = setTimeout(() => {
-      setShow(true);
-    }, 10000);
-    return () => clearTimeout(timer);
-  }, [accepted, homeBlogs.allBlogs.count]);
+  const media = useMedia("(min-width: 992px)");
 
   useEffect(() => {
     const nav = window.localStorage.getItem("right_nav");
@@ -38,15 +21,10 @@ const Home = () => {
 
   return (
     <div className="home_page">
-      <AlertCookie
-        handleSetCookie={handleSetCookie}
-        isOpen={show}
-        handleClose={() => setShow(false)}
-      />
       <HeroSection />
-      <section className="position-relative">
-        <div className="container">
-          <div className="mb-4">
+      <section className="position-relative pt-4 pt-lg-5">
+        <div>
+          <div className="mb-2 mb-md-2">
             <h2 className="m-0">Tody's Top Highlights</h2>
             <p className="text-secondary">
               Latest breaking news, pictures, articles and special reports
@@ -54,7 +32,7 @@ const Home = () => {
           </div>
           <FlexBox row justify="end">
             <HomeBlogsSection />
-            {showSideBar && <Sidebar />}
+            {showSideBar && media && <Sidebar />}
           </FlexBox>
         </div>
       </section>

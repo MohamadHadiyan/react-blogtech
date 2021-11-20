@@ -2,7 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "../../hooks/storeHooks";
 import { IBlog } from "../../utils/TypeScript";
+import { Card } from "../global/Card";
 import { HeaderCard } from "../global/CardComponets";
+import { Col } from "../global/FlexBox";
 
 interface IProps {
   blog: IBlog;
@@ -14,8 +16,8 @@ const Preview = ({ blog }: IProps) => {
   );
 
   return (
-    <div className="col-lg-4">
-      <div className="card mb-3 mb-lg-4">
+    <Col lg="4">
+      <Card className="mb-2 mb-lg-4">
         <div style={{ maxHeight: "400px", overflow: "hidden" }}>
           {category && (
             <div className="position-absolute">
@@ -44,22 +46,27 @@ const Preview = ({ blog }: IProps) => {
           )}
         </div>
         <div className="card-body">
-          <h5 className="card-title">
-            {blog.title.length > 60
-              ? blog.title.slice(0, 50) + "..."
-              : blog.title}
-          </h5>
-          <p className="card-text">
-            {blog.description.length > 150
-              ? blog.description.slice(0, 147) + "..."
-              : blog.description}
-          </p>
+          {blog.title && (
+            <h5 className="card-title">
+              {blog.title.length > 60
+                ? blog.title.slice(0, 50) + "..."
+                : blog.title}
+            </h5>
+          )}
+          
+          {blog.description && (
+            <p className="card-text">
+              {blog.description.length > 150
+                ? blog.description.slice(0, 147) + "..."
+                : blog.description}
+            </p>
+          )}
           <p className="small text-end text-muted mb-0">
             {new Date(blog.createdAt).toLocaleString()}
           </p>
         </div>
-      </div>
-    </div>
+      </Card>
+    </Col>
   );
 };
 

@@ -1,4 +1,4 @@
-import { IUser } from "../../utils/TypeScript";
+import { IUserCard } from "../../utils/TypeScript";
 import * as types from "../types/blogType";
 
 const userBlogsReducer = (
@@ -16,13 +16,13 @@ const userBlogsReducer = (
       }
     case types.CREATE_BLOG_USER_ID:
       return state.map((item) =>
-        item.id === (action.payload.user as IUser)._id
+        item.id === (action.payload.user as IUserCard)._id
           ? { ...item, blogs: [action.payload, ...item.blogs] }
           : item
       );
     case types.UPDATE_BLOG_USER_ID:
       return state.map((item) =>
-        item.id === (action.payload.user as IUser)._id
+        item.id === (action.payload.user as IUserCard)._id
           ? {
               ...item,
               blogs: item.blogs.map((blog) =>
@@ -33,7 +33,7 @@ const userBlogsReducer = (
       );
     case types.DELETE_BLOG_USER_ID:
       return state.map((item) =>
-        item.id === (action.payload.user as IUser)._id
+        item.id === (action.payload.user as IUserCard)._id
           ? {
               ...item,
               blogs: item.blogs.filter(

@@ -18,8 +18,9 @@ import { BellIcon, ConfigIcon } from "../global/Icons";
 
 interface IProps {
   handleRoute: (path: string) => void;
+  isDesktop: boolean;
 }
-const Notification = ({ handleRoute }: IProps) => {
+const Notification = ({ handleRoute, isDesktop }: IProps) => {
   const { auth, notifications } = useAppSelector((state) => state);
   const { pathname } = useLocation();
   const dispatch = useDispatch();
@@ -29,7 +30,7 @@ const Notification = ({ handleRoute }: IProps) => {
   const [getedData, setGetedData] = useState(false);
   const [skip, setSkip] = useState(0);
   const [show, setShow] = useState(false);
-  const ulRef = useRef<HTMLUListElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   const total = notifications.total;
   const data = notifications.data;
@@ -43,7 +44,7 @@ const Notification = ({ handleRoute }: IProps) => {
     if (total === 0 && !getedData) {
       const token = auth.access_token;
       const length = auth.user.notifications.length;
-      const limit = length < 5 ? 5 : length;
+      const limit = length < 10 ? 10 : length;
 
       setLoading(true);
       setGetedData(true);
@@ -60,25 +61,25 @@ const Notification = ({ handleRoute }: IProps) => {
   };
 
   const handleScroll = useCallback(async () => {
-    if (!auth.access_token || !ulRef.current) return;
+    if (!auth.access_token || !listRef.current) return;
 
-    const elem = ulRef.current;
+    const elem = listRef.current;
     const calc = elem.scrollTop + 480;
     const res = calc >= elem.scrollHeight;
 
     if (res && !loading && data.length < total && skip < total) {
       const num =
-        data.length === 0 ? 0 : 5 + skip > total ? total - 5 : 5 + skip;
+        data.length === 0 ? 0 : 10 + skip > total ? total - 10 : 10 + skip;
 
       setLoading(true);
       setSkip(num);
-      dispatch(getNotifications(num, 5, auth.access_token));
+      dispatch(getNotifications(num, 10, auth.access_token));
     }
   }, [auth.access_token, data.length, dispatch, loading, skip, total]);
 
   useEffect(() => {
-    if (!show || !ulRef.current) return;
-    const target = ulRef.current;
+    if (!show || !listRef.current) return;
+    const target = listRef.current;
 
     target.addEventListener("scroll", handleScroll);
 
@@ -99,35 +100,40 @@ const Notification = ({ handleRoute }: IProps) => {
   }, [show]);
 
   useEffect(() => {
-    setNotifesList(data);
+    setNotifesList(notifications.data);
     setLoading(false);
-  }, [data]);
+  }, [notifications.data]);
 
   return (
     <div>
       <div
         onClick={handleGetNotifications}
-        className={`nav-link py-lg-0 position-relative`}
+        className="nav-link py-lg-0 position-relative text-link fw-semi-bold"
         id="notify_dropdown"
         role="button"
         data-bs-toggle="dropdown"
         aria-expanded="false"
         title="Notifications"
       >
-        <span className="rounded-circle border d-block avatar-md p-1 text-center">
+        <span className="rounded-circle border d-inline-block avatar-md p-1 text-center">
           <BellIcon
             fill
             color={pathname === "/notifications" ? "purple" : "link"}
           />
         </span>
+        {!isDesktop && <span className="ms-2">Notifications</span>}
         {auth.user && !!auth.user.notifications.length && (
           <div
-            className={`position-absolute bg-danger line-height-1 text-center rounded-circle text-white top-0 right-0`}
+            className={`position-absolute bg-danger line-height-1 text-center rounded-circle text-white ${
+              isDesktop ? "top-0 right-0" : ""
+            }`}
             style={{
               padding: "3px 0",
               width: "20px",
               height: "20px",
               fontSize: "12px",
+              left: isDesktop ? "" : "22px",
+              top: isDesktop ? "" : "5px",
             }}
           >
             {auth.user.notifications.length}
@@ -135,7 +141,7 @@ const Notification = ({ handleRoute }: IProps) => {
         )}
       </div>
       <div
-        className="dropdown-menu w-100 left-auto right-0 pb-2"
+        className="dropdown-menu w-100 left-auto right-0 pb-2 mb-2 shadow"
         aria-labelledby="notify_dropdown"
         style={{ minWidth: "330px" }}
       >
@@ -152,14 +158,14 @@ const Notification = ({ handleRoute }: IProps) => {
             </Button>
           )}
         </FlexBox>
-        <ul
-          ref={ulRef}
+        <div
+          ref={listRef}
           style={
             notifeslist.length > 2
               ? { maxHeight: "310px", overflowY: "scroll" }
               : {}
           }
-          className="px-2"
+          className="px-2 list-group"
         >
           {!!notifeslist.length
             ? notifeslist.map((item, i) => (
@@ -172,7 +178,7 @@ const Notification = ({ handleRoute }: IProps) => {
                 />
               ))
             : !loading && (
-                <li
+                <div
                   className="text-center p-3 text-secondary"
                   style={{ minHeight: "80px" }}
                 >
@@ -182,14 +188,14 @@ const Notification = ({ handleRoute }: IProps) => {
                     Follow to your favourite blogers to get notified about their
                     latest blogs.
                   </p>
-                </li>
+                </div>
               )}
           {loading && (
-            <li className="position-relative " style={{ minHeight: "80px" }}>
-              <Loading position="absolute" size={40} />
-            </li>
+            <div className="position-relative " style={{ minHeight: "40px" }}>
+              <Loading position="absolute" size={30} />
+            </div>
           )}
-        </ul>
+        </div>
       </div>
     </div>
   );
@@ -206,10 +212,10 @@ const Notify = ({ handleRoute, notify, border, handleView }: INOtifyProps) => {
   const hash = notify.link.split("#");
 
   return (
-    <li
-      className={`d-flex justify-content-center align-items-center text-center ${
-        border ? "border-top mt-1 pt-1" : ""
-      }`}
+    <FlexBox
+      items="center"
+      className={border ? "border-top mt-1 pt-1" : ""}
+      id={notify._id}
     >
       <ActiveLink onClick={() => handleRoute(`/profile/${notify.sender}`)}>
         <Avatar src={notify.image} size="md" border className="me-2" />
@@ -239,7 +245,7 @@ const Notify = ({ handleRoute, notify, border, handleView }: INOtifyProps) => {
           </span>
         </ActiveLink>
       </div>
-    </li>
+    </FlexBox>
   );
 };
 

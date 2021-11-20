@@ -18,14 +18,14 @@ const OtherBlogsSection = ({ nextPost, prevPost, userId }: IOther) => {
     <FlexBox row justify="center" className="mb-4">
       <Col lg="10">
         <div
-          className="w-100 btn-group position-relative"
-          style={{ height: "60px" }}
+          className="w-100 h-auto btn-group position-relative"
         >
           <Button
             outline
             color="purple"
             onMouseEnter={() => setShowPrevTooltip(true)}
             onMouseLeave={() => setShowPrevTooltip(false)}
+            className="p-md-2 p-lg-3"
           >
             <ActiveLink
               to={`/blog/${prevPost._id}`}

@@ -27,7 +27,7 @@
 .dark .navbar-header,
 .dark .nav-item a,
 .dark .text-link,
-.dark .btn {
+.dark .btn:not(.text-purple) {
   color: #ebeaee !important;
 }
 

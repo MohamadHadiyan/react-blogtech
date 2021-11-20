@@ -1,6 +1,9 @@
 import { Request } from "express";
 import { Document } from "mongoose";
 
+type UserPrivacyType = "public" | "private";
+export type BlogPrivacyType = "public" | "private" | "draft";
+type ThemeType = "dark" | "light";
 export interface INotification {
   _id: string;
   title?: string;
@@ -22,8 +25,6 @@ export interface ISocialProfiles {
   youtube: string;
   website: string;
 }
-
-type UserPrivacyType = "public" | "private";
 
 export interface IPrivacySetting {
   _id: string;
@@ -49,7 +50,7 @@ export interface INotifySettings {
 
 export interface IUserInterface {
   _id: string;
-  themeMode: "dark" | "light";
+  themeMode: ThemeType;
   favouriteColor: string;
   rightNavigation: boolean;
 }
@@ -138,8 +139,6 @@ export interface ITag extends Document {
   _doc: object;
 }
 
-export type BlogPrivacyType = "public" | "private" | "draft";
-
 export interface IBlog {
   user: string;
   title: string;
@@ -152,6 +151,7 @@ export interface IBlog {
   likes: string[];
   comments: string[];
   privacy: BlogPrivacyType;
+  readingTime: number;
   _doc: object;
 }
 

@@ -40,7 +40,7 @@ const SideBar = () => {
 
   return (
     <Col md="4" lg="3">
-      <Navbar className={`mb-4 mb-md-0 ${rounded}`}>
+      <Navbar className={`mb-2 mb-lg-4 mb-md-0 ${rounded}`}>
         <NavbarMenu mediaQuery="768">
           <DashboardNav tab={tab} />
           <SettingsNav userId={user._id} type={user.type} tab={tab} />

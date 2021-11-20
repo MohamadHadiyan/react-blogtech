@@ -20,10 +20,16 @@ export const Alert = () => {
   );
 };
 
-export const ShowErrorMsg = (msg: string) => {
-  return <div className="errorMsg">{msg}</div>;
-};
-
-export const ShowSuccessMsg = (msg: string) => {
-  return <div className="successMsg">{msg}</div>;
+export const ShowMsg = ({
+  msg,
+  color,
+}: {
+  msg: string;
+  color: "danger" | "success";
+}) => {
+  return (
+    <div className={`bg-${color} rounded p-4 fs-5 fw-semi-bold w-100 text-center`}>
+      {msg}
+    </div>
+  );
 };

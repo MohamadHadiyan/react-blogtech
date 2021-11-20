@@ -22,7 +22,7 @@ const _user = {
     let: { user_id: "$user" },
     pipeline: [
       { $match: { $expr: { $eq: ["$_id", "$$user_id"] } } },
-      { $project: { name: 1, avatar: 1 } }, // does not return password
+      { $project: { name: 1, avatar: 1, followers: 1 } }, // does not return password
     ],
     as: "user",
   },
@@ -117,7 +117,7 @@ const blogCtrl = {
 
       await newBlog.save();
 
-      res.json({ ...newBlog._doc, user: req.user });
+      return res.json({ ...newBlog._doc, user: req.user });
     } catch (err: any) {
       return res.status(500).json({ msg: err.message });
     }

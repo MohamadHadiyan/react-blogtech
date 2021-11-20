@@ -1,4 +1,5 @@
 import React from "react";
+import { useMedia } from "../../hooks/useMedia";
 import { IBlog, ICategory } from "../../utils/TypeScript";
 import {
   CardFooter,
@@ -14,12 +15,14 @@ type Tprops = {
 };
 
 const FeaturedPost = ({ post, bestPost = false }: Tprops) => {
+  const match768 = useMedia("(min-width:768px)");
+
   if (!post) return <div />;
 
   const category = post.category as ICategory;
   const style = {
     backgroundImage: `url(${post.thumbnail as string})`,
-    height: bestPost ? "560px" : "268px",
+    height: bestPost ? (match768 ? "560px" : "400px") : "268px",
   };
 
   return (
@@ -41,7 +44,7 @@ const FeaturedPost = ({ post, bestPost = false }: Tprops) => {
           <TitleCardH5 title={post.title} to={`/blog/${post._id as string}`} />
         )}
         {bestPost && (
-          <p className="text-white text-bold m-0">
+          <p className="d-none d-sm-block text-white text-bold m-0">
             {post.description.length > 97
               ? post.description.slice(0, 97) + "..."
               : post.description}

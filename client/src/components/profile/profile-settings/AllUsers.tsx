@@ -46,10 +46,10 @@ const AllUsers = () => {
       </div>
       <CardBody
         className="position-relative"
-        style={loading ? { height: "130px" } : {}}
+        style={loading && !users.length ? { height: "130px" } : {}}
       >
         <FlexBox row className="g-3">
-          {loading && <Loading position="absolute" />}
+          {loading && <Loading position="absolute" size={30} />}
           {searchUser ? (
             <UserCard user={searchUser} />
           ) : users.length ? (

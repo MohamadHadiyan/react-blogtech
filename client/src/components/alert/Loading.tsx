@@ -1,16 +1,7 @@
 import { HTMLAttributes } from "react";
+import { TColor } from "../../utils/TypeScript";
 
 type TPostion = "fixed" | "absolute";
-type TColor =
-  | "primariy"
-  | "light"
-  | "dark"
-  | "secondary"
-  | "white"
-  | "success"
-  | "danger"
-  | "warning"
-  | "light-soft";
 
 interface ILoading {
   position?: TPostion;

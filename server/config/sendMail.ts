@@ -11,7 +11,9 @@ const sendMail = async (
   to: string,
   url: string,
   name: string,
-  text: string
+  text: string,
+  text_link: string,
+  description: string
 ) => {
   const oAuth2Client = new OAuth2Client(
     CLIENT_ID,
@@ -36,7 +38,7 @@ const sendMail = async (
       },
     });
 
-    const html = emailHtml(to, url, name);
+    const html = emailHtml(to, url, name, text_link, description);
 
     const mailOptions = {
       from: SENDER_MAIL,
@@ -54,7 +56,13 @@ const sendMail = async (
 
 export default sendMail;
 
-function emailHtml(to: string, url: string, name: string) {
+function emailHtml(
+  to: string,
+  url: string,
+  name: string,
+  text_link: string,
+  description: string
+) {
   return `
   <table id="m_-3266674082788707063wrapper" cellpadding="20" cellspacing="0" border="0" style="width:100%;background-color:#eaeaea;background-image:url(https://ci6.googleusercontent.com/proxy/ql83XJ9oLXv_1MgTWkzlBGmVr-Jdc4KxOzmycb4GNbj1ie38oOvcENkZjZS1Di59J4wTcnWP8-fLBNtdnHVYuSnmQGPOpacnZoN7m1qVYarR72U=s0-d-e1-ft#https://static0.twilio.com/resources/images/email/background.jpg);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-weight:300;border-collapse:collapse;margin:0;padding:0;line-height:100%;height:100%;">
   <tbody><tr><td style="border-collapse:collapse;vertical-align:top">
@@ -82,8 +90,7 @@ function emailHtml(to: string, url: string, name: string) {
 <table cellpadding="10" cellspacing="0" border="0" style="width:100%;border-collapse:collapse">
 <tbody><tr><td style="border-collapse:collapse;vertical-align:top">
   <p id="m_-3266674082788707063description" style="font-size:16px;color:#555;line-height:26px;font-weight:300;margin:0 40px">
-          To activate your Twilio Account, please verify your email address.<br>
-    Your account will not be created until your email address is confirmed.
+          ${description}
           </p>
 </td></tr></tbody>
 </table>
@@ -91,7 +98,7 @@ function emailHtml(to: string, url: string, name: string) {
 <table cellpadding="10" cellspacing="0" border="0" style="width:100%;border-collapse:collapse">
 <tbody><tr><td style="border-collapse:collapse;vertical-align:top">
   <p style="font-size:16px;color:#555;line-height:26px;font-weight:300;margin:0 40px">
-    <a href="${url}" class="notranslate" style="background-color:#ffbe00; border:1px solid #ffbe00; border-color:#ffbe00; border-radius:0px; border-width:1px; color:#000000; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 40px 12px 40px; text-align:center; text-decoration:none; border-style:solid; font-family:inherit;" target="_blank" >Confirm Your Email</a>
+    <a href="${url}" class="notranslate" style="background-color:#ffbe00; border:1px solid #ffbe00; border-color:#ffbe00; border-radius:0px; border-width:1px; color:#000000; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 40px 12px 40px; text-align:center; text-decoration:none; border-style:solid; font-family:inherit;" target="_blank" >${text_link}</a>
   </p>
   </td></tr></tbody>
 </table>

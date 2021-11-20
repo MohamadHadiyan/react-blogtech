@@ -9,30 +9,25 @@ const blogSchema = new Schema(
     },
     title: {
       type: String,
-      required: true,
       trim: true,
       minLength: 5,
       maxLength: 100,
+      default: "",
     },
-    thumbnail: {
-      type: String,
-      required: true,
-    },
+    thumbnail: { type: String },
     category: {
       type: Types.ObjectId,
       ref: "category",
     },
     description: {
       type: String,
-      required: true,
       trim: true,
-      minLength: 50,
       maxLength: 300,
+      default: "",
     },
     content: {
       type: String,
-      required: true,
-      minLength: 2000,
+      default: "",
     },
     tags: [
       {
@@ -52,8 +47,9 @@ const blogSchema = new Schema(
         ref: "user",
       },
     ],
-    views: { type: Number },
-    privacy: { type: String },
+    readingTime: { type: Number, default: 5 },
+    views: { type: Number, default: 0 },
+    privacy: { type: String, default: "public" },
   },
   {
     timestamps: true,

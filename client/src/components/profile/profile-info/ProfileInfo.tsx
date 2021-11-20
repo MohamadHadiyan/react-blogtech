@@ -8,6 +8,7 @@ import ProfileBlogs from "../ProfileBlogs";
 import ProfileInfoSideBar from "./ProfileInfoSideBar";
 import { useHistory, useParams } from "react-router";
 import { useAppSelector } from "../../../hooks/storeHooks";
+import FlexBox, { Col } from "../../global/FlexBox";
 
 interface IProps {
   id: string;
@@ -58,17 +59,17 @@ const ProfileInfo = ({ id }: IProps) => {
   return (
     <>
       <ProfileHeader info={info} />
-      <div className="row">
+      <FlexBox row>
         <ProfileInfoSideBar
           userIntro={user.intro}
           followersCount={user.followers.length}
           followingsCount={user.followings.length}
           blogsCount={blogsCount}
         />
-        <div className="col-lg-9 col-md-8 col-12">
+        <Col md="8" lg="9">
           <ProfileBlogs />
-        </div>
-      </div>
+        </Col>
+      </FlexBox>
     </>
   );
 };

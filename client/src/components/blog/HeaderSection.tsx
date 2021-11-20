@@ -25,7 +25,7 @@ const HeaderSection = ({ blog }: IProps) => {
               {blog.title.replace(/\s/g, " ")}
             </BlogTitle>
             <BlogText className="d-inline-block text-secondary">
-              10 min read
+              {blog.readingTime || 10} min read
             </BlogText>
           </div>
           {typeof blog.category !== "string" && (
@@ -37,7 +37,7 @@ const HeaderSection = ({ blog }: IProps) => {
               {blog.category.name}
             </ActiveLink>
           )}
-          <FlexBox wrap justify="between">
+          <FlexBox wrap justify="between" items="end">
             {typeof blog.user !== "string" && (
               <Author
                 id={blog.user._id}
@@ -46,27 +46,34 @@ const HeaderSection = ({ blog }: IProps) => {
                 size="lg"
                 children={
                   <div className="text-secondary">
-                    {blog.user.followers
-                      ? toSummarize(blog.user.followers.length)
-                      : "2.1k"}{" "}
-                    followers
+                    {blog.user.followers.length
+                      ? toSummarize(blog.user.followers.length) + " followers"
+                      : ""}
                   </div>
                 }
               />
             )}
-            {auth.user && (blog.user as IUserCard)._id !== auth.user._id && (
+            {auth.user && (blog.user as IUserCard)._id !== auth.user._id ? (
               <UserFollow followed_id={(blog.user as IUserCard)._id} />
+            ) : (
+              <ActiveLink to={`/update_blog/${blog._id}`} button>
+                Edit
+              </ActiveLink>
             )}
           </FlexBox>
           <BlogDetails blog={blog} />
           {!!blog.tags.length && (
-            <FlexBox justify="start" className="my-2">
+            <FlexBox
+              justify="center"
+              wrap
+              className="justify-content-md-start mt-2 mb-1 pt-2 border-top"
+            >
               {(blog.tags as ITag[]).map((item) => (
                 <ActiveLink
                   to={`/results?tag=${item._id}`}
                   key={item._id}
                   color="purple"
-                  className="p-1 px-2 border rounded shadow-sm me-2"
+                  className="p-1 px-2 border rounded shadow-sm me-2 mb-1"
                 >
                   {item.name}
                 </ActiveLink>
